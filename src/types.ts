@@ -1,5 +1,20 @@
-export type ItemType = 'relic' | 'consumable' | 'curse';
-export type Rarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+export type ItemType = 'modifier' | 'consumable' | 'relic' | 'curse';
+export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary';
+
+export type DifficultyId = 'easy' | 'semi-easy' | 'less-easy' | 'hard';
+
+export interface DifficultySettings {
+  id: DifficultyId;
+  label: string;
+  boardSize: number;
+  startingHearts: number;
+  startingCoins: number;
+  callCapBase: number;
+  callCapPerFloor: number;
+  distinctNumbers: number;
+  rewardCoins: { min: number; max: number };
+  negativeModifierFloors: number[];
+}
 
 export interface ItemDefinition {
   id: string;
@@ -31,16 +46,39 @@ export interface BiomeDefinition {
   events: string[];
 }
 
+export interface EncounterModifierEffect {
+  sequenceOffset?: { offset: number; count: number };
+  blockedColumns?: { columns: string[]; calls: number };
+  previewPenalty?: number;
+  callCapModifier?: number;
+  bossDamageBonus?: number;
+  startingStatus?: {
+    target: 'player' | 'boss';
+    id: StatusEffectId | string;
+    stacks: number;
+    duration?: number;
+  };
+}
+
+export interface EncounterModifierDefinition {
+  id: string;
+  name: string;
+  description: string;
+  effect: EncounterModifierEffect;
+}
+
+export interface EncounterModifierState extends EncounterModifierDefinition {
+  sequenceRemaining?: number;
+  sequenceAnchor?: number;
+  blockedState?: { columns: string[]; callsLeft: number };
+}
+
 export interface BalanceData {
-  startingHearts: number;
-  startingCoins: number;
   board: {
     columns: string[];
     numbersPerColumn: number;
-    freeIndex: number;
   };
-  callCapBase: number;
-  callCapPerFloor: number;
+  difficulties: Record<DifficultyId, DifficultySettings>;
   previewBase: number;
   combo: {
     hitBonus: number;
@@ -60,6 +98,7 @@ export interface BalanceData {
     bossMultiplier: number;
     playerReward: number;
   };
+  encounterModifiers: EncounterModifierDefinition[];
   floorModifiers: FloorModifierDefinition[];
 }
 
@@ -166,21 +205,28 @@ export interface RunState {
   seed: number;
   biomeId: string;
   biome: BiomeDefinition;
+  difficultyId: DifficultyId;
+  difficulty: DifficultySettings;
   floorIndex: number;
   callCap: number;
   callsMade: number;
   deck: number[];
   preview: number[];
   board: BoardCell[];
+  boardSize: number;
+  lastCall?: number;
   boss: BossState;
   player: PlayerState;
   inventory: InventoryItem[];
   shop: ShopOffer[];
+  shopAvailable: boolean;
+  awaitingAdvance: boolean;
   events: ActiveEvent[];
   log: string[];
   defeatedBosses: string[];
   adaptiveThreat: number;
   floorModifier?: FloorModifierState;
+  encounterModifier?: EncounterModifierState;
   summary?: RunSummary;
   metrics?: {
     damageDealt: number;

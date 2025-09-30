@@ -1,9 +1,12 @@
+import balanceData from '@data/balance.json';
 import bossesData from '@data/bosses.json';
 import itemsData from '@data/items.json';
 import { EVENT_LIBRARY } from './game';
 import { engine } from './engine';
 import type {
+  BalanceData,
   BiomeDefinition,
+  DifficultyId,
   EngineSnapshot,
   InventoryItem,
   ItemDefinition,
@@ -12,8 +15,10 @@ import type {
   StatusEffectState
 } from './types';
 
+const balance = balanceData as BalanceData;
 const biomes = bossesData as Record<string, BiomeDefinition>;
 const items = itemsData as ItemDefinition[];
+const difficulties = balance.difficulties;
 
 const BIOME_NOTES: Record<string, string> = {
   crypt: 'Rotting halls haunted by curses and shrines.',
@@ -37,6 +42,7 @@ export class UIManager {
   private root!: HTMLElement;
   private tooltip!: HTMLDivElement;
   private unsubscribe?: () => void;
+  private selectedDifficulty: DifficultyId = 'easy';
 
   mount(root: HTMLElement): void {
     this.root = root;
@@ -103,6 +109,24 @@ export class UIManager {
 
     const actions = document.createElement('section');
     actions.className = 'panel';
+    const difficultyRow = document.createElement('div');
+    difficultyRow.className = 'settings-row';
+    const difficultyLabel = document.createElement('label');
+    difficultyLabel.textContent = 'Difficulty';
+    const difficultySelect = document.createElement('select');
+    difficultySelect.className = 'btn';
+    Object.values(difficulties).forEach((difficulty) => {
+      const option = document.createElement('option');
+      option.value = difficulty.id;
+      option.textContent = `${difficulty.label} — ${difficulty.boardSize}x${difficulty.boardSize}`;
+      if (difficulty.id === this.selectedDifficulty) option.selected = true;
+      difficultySelect.appendChild(option);
+    });
+    difficultySelect.addEventListener('change', () => {
+      this.selectedDifficulty = difficultySelect.value as DifficultyId;
+    });
+    difficultyRow.append(difficultyLabel, difficultySelect);
+    actions.appendChild(difficultyRow);
     const continueButton = document.createElement('button');
     continueButton.className = 'btn';
     continueButton.textContent = 'Continue Run';
@@ -155,7 +179,7 @@ export class UIManager {
         const start = document.createElement('button');
         start.className = 'btn';
         start.textContent = 'Start Run';
-        start.addEventListener('click', () => engine.startNewRun(id));
+        start.addEventListener('click', () => engine.startNewRun(id, this.selectedDifficulty));
         card.appendChild(start);
       } else {
         const locked = document.createElement('span');
@@ -179,7 +203,7 @@ export class UIManager {
     header.innerHTML = `
       <div class="brand">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="var(--accent)" stroke-width="2"></circle><path d="M7 12h10M12 7v10" stroke="var(--accent)" stroke-width="2"></path></svg>
-        ${run.biome.name} — Floor ${run.floorIndex + 1}
+        ${run.biome.name} — Floor ${run.floorIndex + 1} · ${run.difficulty.label}
       </div>
     `;
     const statRow = document.createElement('div');
@@ -189,6 +213,7 @@ export class UIManager {
       <span class="stat-pill" data-tooltip="Coins">🪙 ${run.player.coins}</span>
       <span class="stat-pill" data-tooltip="Calls used">📣 ${run.callsMade}/${run.callCap}</span>
       <span class="stat-pill" data-tooltip="Combo level">🔗 ${run.player.combo}</span>
+      <span class="stat-pill" data-tooltip="Board size">#️⃣ ${run.boardSize}×${run.boardSize}</span>
     `;
     header.appendChild(statRow);
     const headerButtons = document.createElement('div');
@@ -216,6 +241,7 @@ export class UIManager {
     boardPanel.appendChild(boardTitle);
     const grid = document.createElement('div');
     grid.className = 'grid';
+    grid.style.setProperty('--board-size', String(run.boardSize));
     run.board.forEach((cell) => {
       const button = document.createElement('button');
       button.className = 'cell';
@@ -237,7 +263,8 @@ export class UIManager {
     const callBtn = document.createElement('button');
     callBtn.className = 'btn';
     callBtn.setAttribute('data-variant', 'primary');
-    callBtn.textContent = 'Call Next';
+    callBtn.textContent = run.awaitingAdvance ? 'Victory!' : 'Call Next';
+    callBtn.disabled = run.awaitingAdvance;
     callBtn.addEventListener('click', () => engine.callNext());
     const freeBtn = document.createElement('button');
     freeBtn.className = 'btn';
@@ -255,11 +282,25 @@ export class UIManager {
     const previewInfo = document.createElement('span');
     previewInfo.className = 'stat-pill';
     previewInfo.textContent = `Preview ${run.preview.join(', ') || '—'}`;
+    previewInfo.setAttribute('data-tooltip', 'Upcoming calls');
     controls.append(callBtn, freeBtn, bombBtn, previewInfo);
+    if (run.awaitingAdvance && !run.summary) {
+      const advanceBtn = document.createElement('button');
+      advanceBtn.className = 'btn';
+      advanceBtn.setAttribute('data-variant', 'primary');
+      advanceBtn.textContent = 'Advance to Next Battle';
+      advanceBtn.addEventListener('click', () => engine.advanceFloor());
+      controls.append(advanceBtn);
+      const reminder = document.createElement('span');
+      reminder.className = 'stat-pill';
+      reminder.textContent = 'Spend your coins or continue!';
+      controls.append(reminder);
+    }
     boardPanel.appendChild(controls);
 
     const logCard = document.createElement('div');
     logCard.className = 'panel';
+    logCard.style.flex = '1 1 auto';
     logCard.innerHTML = '<h3>Log</h3>';
     const log = document.createElement('div');
     log.className = 'log';
@@ -284,20 +325,36 @@ export class UIManager {
     shopSection.innerHTML = '<h3>Shop</h3>';
     const shopList = document.createElement('div');
     shopList.className = 'shop-list';
-    run.shop.forEach((offer) => {
-      shopList.appendChild(this.buildShopOffer(snapshot, offer));
-    });
-    shopSection.appendChild(shopList);
+    if (run.shopAvailable) {
+      if (run.shop.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'small';
+        empty.textContent = 'Shopkeeper is preparing new stock.';
+        shopSection.appendChild(empty);
+      } else {
+        run.shop.forEach((offer) => {
+          shopList.appendChild(this.buildShopOffer(snapshot, offer));
+        });
+        shopSection.appendChild(shopList);
+      }
+    } else {
+      const closed = document.createElement('p');
+      closed.className = 'small';
+      closed.textContent = 'Shop opens after each victory.';
+      shopSection.appendChild(closed);
+    }
     const shopButtons = document.createElement('div');
     shopButtons.style.display = 'flex';
     shopButtons.style.gap = '8px';
     const rerollBtn = document.createElement('button');
     rerollBtn.className = 'btn';
     rerollBtn.textContent = 'Reroll';
+    rerollBtn.disabled = !run.shopAvailable;
     rerollBtn.addEventListener('click', () => engine.rerollShop());
     const skipBtn = document.createElement('button');
     skipBtn.className = 'btn';
     skipBtn.textContent = 'Skip';
+    skipBtn.disabled = !run.shopAvailable;
     skipBtn.addEventListener('click', () => engine.skipShop());
     shopButtons.append(rerollBtn, skipBtn);
     shopSection.appendChild(shopButtons);
@@ -528,6 +585,14 @@ export class UIManager {
       .map((status) => `<span class="status-badge" data-tooltip="${this.describeStatus(status)}">${status.id} ×${status.stacks}</span>`)
       .join('') || '<span class="small">No statuses</span>';
     card.append(header, hpBar, statuses);
+    const encounter = document.createElement('p');
+    encounter.className = 'small';
+    if (run.encounterModifier) {
+      encounter.innerHTML = `<strong>Modifier:</strong> ${run.encounterModifier.name}<br>${run.encounterModifier.description}`;
+    } else {
+      encounter.textContent = 'Modifier: None active.';
+    }
+    card.appendChild(encounter);
     return card;
   }
 

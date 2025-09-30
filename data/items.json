@@ -1,35 +1,1500 @@
 [
   {
+    "id": "aurora-draft",
+    "name": "Aurora Draft",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "combo"
+    ],
+    "effect": "Consume to restore 6 health and boost combo by 1.",
+    "synergy": "Synergy: Pairs with other healing relics & combo chains.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "aurora-salve",
+    "name": "Aurora Salve",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "healing",
+      "combo"
+    ],
+    "effect": "Consume to restore 12 health and boost combo by 2.",
+    "synergy": "Synergy: Pairs with other healing relics & combo chains.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "aurora-engine",
+    "name": "Aurora Engine",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "preview",
+      "vision"
+    ],
+    "effect": "Gain +3 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & preview stacks.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "aurora-core",
+    "name": "Aurora Core",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "preview",
+      "vision"
+    ],
+    "effect": "Gain +4 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & preview stacks.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "ember-brew",
+    "name": "Ember Brew",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Consume to blast the foe for 5 damage and boost combo by 1.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "ember-remedy",
+    "name": "Ember Remedy",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Consume to blast the foe for 10 damage and boost combo by 2.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "ember-sigil",
+    "name": "Ember Sigil",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Marked numbers deal +3 damage. Combo chains add +3 damage per hit.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "ember-crown",
+    "name": "Ember Crown",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Marked numbers deal +4 damage. Combo chains add +4 damage per hit.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "verdant-infusion",
+    "name": "Verdant Infusion",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Consume to restore 6 health and gain 1 free dauber.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "verdant-vial",
+    "name": "Verdant Vial",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Consume to restore 12 health and gain 2 free daubers.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "verdant-charm",
+    "name": "Verdant Charm",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Lines restore 6 health. Reduce counter damage by 3.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "verdant-aegis",
+    "name": "Verdant Aegis",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Lines restore 8 health. Reduce counter damage by 4.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "bog-tonic",
+    "name": "Bog Tonic",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "status"
+    ],
+    "effect": "Consume to restore 6 health and expose the boss for 1 turn.",
+    "synergy": "Synergy: Pairs with other healing relics & status inflictors.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "bog-elixir",
+    "name": "Bog Elixir",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "healing",
+      "status"
+    ],
+    "effect": "Consume to restore 12 health and expose the boss for 2 turns.",
+    "synergy": "Synergy: Pairs with other healing relics & status inflictors.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "bog-totem",
+    "name": "Bog Totem",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "status",
+      "shield"
+    ],
+    "effect": "Reduce counter damage by 3. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with status inflictors & defensive charms.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "bog-heart",
+    "name": "Bog Heart",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "status",
+      "shield"
+    ],
+    "effect": "Reduce counter damage by 4. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with status inflictors & defensive charms.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "dune-draft",
+    "name": "Dune Draft",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "economy",
+      "luck"
+    ],
+    "effect": "Consume to gain 3 coins.",
+    "synergy": "Synergy: Pairs with coin engines & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "dune-salve",
+    "name": "Dune Salve",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "economy",
+      "luck"
+    ],
+    "effect": "Consume to gain 6 coins.",
+    "synergy": "Synergy: Pairs with coin engines & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "dune-engine",
+    "name": "Dune Engine",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "economy",
+      "luck"
+    ],
+    "effect": "Earn +3 coins after victories.",
+    "synergy": "Synergy: Pairs with coin engines & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "dune-core",
+    "name": "Dune Core",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "economy",
+      "luck"
+    ],
+    "effect": "Earn +4 coins after victories.",
+    "synergy": "Synergy: Pairs with coin engines & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "reef-brew",
+    "name": "Reef Brew",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Consume to restore 6 health and gain 1 free dauber.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "reef-remedy",
+    "name": "Reef Remedy",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Consume to restore 12 health and gain 2 free daubers.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "reef-sigil",
+    "name": "Reef Sigil",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "vision",
+      "shield"
+    ],
+    "effect": "Reduce counter damage by 3. Gain +3 preview calls.",
+    "synergy": "Synergy: Pairs with preview stacks & defensive charms.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "reef-crown",
+    "name": "Reef Crown",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "vision",
+      "shield"
+    ],
+    "effect": "Reduce counter damage by 4. Gain +4 preview calls.",
+    "synergy": "Synergy: Pairs with preview stacks & defensive charms.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "tempest-infusion",
+    "name": "Tempest Infusion",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Consume to blast the foe for 5 damage and boost combo by 1.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "tempest-vial",
+    "name": "Tempest Vial",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Consume to blast the foe for 10 damage and boost combo by 2.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "tempest-charm",
+    "name": "Tempest Charm",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "preview",
+      "damage"
+    ],
+    "effect": "Marked numbers deal +3 damage. Gain +3 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & aggressive builds.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "tempest-aegis",
+    "name": "Tempest Aegis",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "preview",
+      "damage"
+    ],
+    "effect": "Marked numbers deal +4 damage. Gain +4 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & aggressive builds.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "clockwork-tonic",
+    "name": "Clockwork Tonic",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "economy",
+      "combo"
+    ],
+    "effect": "Consume to gain 3 coins and boost combo by 1.",
+    "synergy": "Synergy: Pairs with coin engines & combo chains.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "clockwork-elixir",
+    "name": "Clockwork Elixir",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "economy",
+      "combo"
+    ],
+    "effect": "Consume to gain 6 coins and boost combo by 2.",
+    "synergy": "Synergy: Pairs with coin engines & combo chains.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "clockwork-totem",
+    "name": "Clockwork Totem",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "combo",
+      "status"
+    ],
+    "effect": "Combo chains add +3 damage per hit. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with combo chains & status inflictors.",
+    "icon": "item-arcane"
+  },
+  {
+    "id": "clockwork-heart",
+    "name": "Clockwork Heart",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "combo",
+      "status"
+    ],
+    "effect": "Combo chains add +4 damage per hit. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with combo chains & status inflictors.",
+    "icon": "item-arcane"
+  },
+  {
+    "id": "lunar-draft",
+    "name": "Lunar Draft",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "luck"
+    ],
+    "effect": "Consume to restore 6 health and gain 3 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & fortune items.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "lunar-salve",
+    "name": "Lunar Salve",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "healing",
+      "luck"
+    ],
+    "effect": "Consume to restore 12 health and gain 6 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & fortune items.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "lunar-engine",
+    "name": "Lunar Engine",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "preview",
+      "economy"
+    ],
+    "effect": "Gain +3 preview calls. Earn +3 coins after victories.",
+    "synergy": "Synergy: Pairs with vision gear & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "lunar-core",
+    "name": "Lunar Core",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "preview",
+      "economy"
+    ],
+    "effect": "Gain +4 preview calls. Earn +4 coins after victories.",
+    "synergy": "Synergy: Pairs with vision gear & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "solar-brew",
+    "name": "Solar Brew",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "damage",
+      "economy"
+    ],
+    "effect": "Consume to gain 3 coins and blast the foe for 5 damage.",
+    "synergy": "Synergy: Pairs with aggressive builds & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "solar-remedy",
+    "name": "Solar Remedy",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "damage",
+      "economy"
+    ],
+    "effect": "Consume to gain 6 coins and blast the foe for 10 damage.",
+    "synergy": "Synergy: Pairs with aggressive builds & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "solar-sigil",
+    "name": "Solar Sigil",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "damage",
+      "vision"
+    ],
+    "effect": "Marked numbers deal +3 damage. Gain +3 preview calls.",
+    "synergy": "Synergy: Pairs with aggressive builds & preview stacks.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "solar-crown",
+    "name": "Solar Crown",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "damage",
+      "vision"
+    ],
+    "effect": "Marked numbers deal +4 damage. Gain +4 preview calls.",
+    "synergy": "Synergy: Pairs with aggressive builds & preview stacks.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "glimmer-infusion",
+    "name": "Glimmer Infusion",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "luck"
+    ],
+    "effect": "Consume to restore 6 health and gain 3 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & fortune items.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "glimmer-vial",
+    "name": "Glimmer Vial",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "healing",
+      "luck"
+    ],
+    "effect": "Consume to restore 12 health and gain 6 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & fortune items.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "glimmer-charm",
+    "name": "Glimmer Charm",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "preview",
+      "combo"
+    ],
+    "effect": "Gain +3 preview calls. Combo chains add +3 damage per hit.",
+    "synergy": "Synergy: Pairs with vision gear & combo chains.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "glimmer-aegis",
+    "name": "Glimmer Aegis",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "preview",
+      "combo"
+    ],
+    "effect": "Gain +4 preview calls. Combo chains add +4 damage per hit.",
+    "synergy": "Synergy: Pairs with vision gear & combo chains.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "emberleaf-tonic",
+    "name": "Emberleaf Tonic",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "damage"
+    ],
+    "effect": "Consume to restore 6 health and blast the foe for 5 damage.",
+    "synergy": "Synergy: Pairs with other healing relics & aggressive builds.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "emberleaf-elixir",
+    "name": "Emberleaf Elixir",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "healing",
+      "damage"
+    ],
+    "effect": "Consume to restore 12 health and blast the foe for 10 damage.",
+    "synergy": "Synergy: Pairs with other healing relics & aggressive builds.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "emberleaf-totem",
+    "name": "Emberleaf Totem",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "damage",
+      "healing"
+    ],
+    "effect": "Marked numbers deal +3 damage. Lines restore 6 health.",
+    "synergy": "Synergy: Pairs with aggressive builds & other healing relics.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "emberleaf-heart",
+    "name": "Emberleaf Heart",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "damage",
+      "healing"
+    ],
+    "effect": "Marked numbers deal +4 damage. Lines restore 8 health.",
+    "synergy": "Synergy: Pairs with aggressive builds & other healing relics.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "tidal-draft",
+    "name": "Tidal Draft",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Consume to restore 6 health and gain 1 free dauber.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "tidal-salve",
+    "name": "Tidal Salve",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "healing",
+      "shield"
+    ],
+    "effect": "Consume to restore 12 health and gain 2 free daubers.",
+    "synergy": "Synergy: Pairs with other healing relics & defensive charms.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "tidal-engine",
+    "name": "Tidal Engine",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "shield",
+      "status"
+    ],
+    "effect": "Reduce counter damage by 3. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with defensive charms & status inflictors.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "tidal-core",
+    "name": "Tidal Core",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "shield",
+      "status"
+    ],
+    "effect": "Reduce counter damage by 4. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with defensive charms & status inflictors.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "thorn-brew",
+    "name": "Thorn Brew",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "damage",
+      "status"
+    ],
+    "effect": "Consume to blast the foe for 5 damage and expose the boss for 1 turn.",
+    "synergy": "Synergy: Pairs with aggressive builds & status inflictors.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "thorn-remedy",
+    "name": "Thorn Remedy",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "damage",
+      "status"
+    ],
+    "effect": "Consume to blast the foe for 10 damage and expose the boss for 2 turns.",
+    "synergy": "Synergy: Pairs with aggressive builds & status inflictors.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "thorn-sigil",
+    "name": "Thorn Sigil",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "status",
+      "combo"
+    ],
+    "effect": "Combo chains add +3 damage per hit. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with status inflictors & combo chains.",
+    "icon": "item-arcane"
+  },
+  {
+    "id": "thorn-crown",
+    "name": "Thorn Crown",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "status",
+      "combo"
+    ],
+    "effect": "Combo chains add +4 damage per hit. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with status inflictors & combo chains.",
+    "icon": "item-arcane"
+  },
+  {
+    "id": "emberglass-infusion",
+    "name": "Emberglass Infusion",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "damage",
+      "luck"
+    ],
+    "effect": "Consume to gain 3 coins and blast the foe for 5 damage.",
+    "synergy": "Synergy: Pairs with aggressive builds & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "emberglass-vial",
+    "name": "Emberglass Vial",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "damage",
+      "luck"
+    ],
+    "effect": "Consume to gain 6 coins and blast the foe for 10 damage.",
+    "synergy": "Synergy: Pairs with aggressive builds & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "emberglass-charm",
+    "name": "Emberglass Charm",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "damage",
+      "economy"
+    ],
+    "effect": "Marked numbers deal +3 damage. Earn +3 coins after victories.",
+    "synergy": "Synergy: Pairs with aggressive builds & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "emberglass-aegis",
+    "name": "Emberglass Aegis",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "damage",
+      "economy"
+    ],
+    "effect": "Marked numbers deal +4 damage. Earn +4 coins after victories.",
+    "synergy": "Synergy: Pairs with aggressive builds & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "starfall-tonic",
+    "name": "Starfall Tonic",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "combo",
+      "economy"
+    ],
+    "effect": "Consume to gain 3 coins and boost combo by 1.",
+    "synergy": "Synergy: Pairs with combo chains & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "starfall-elixir",
+    "name": "Starfall Elixir",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "combo",
+      "economy"
+    ],
+    "effect": "Consume to gain 6 coins and boost combo by 2.",
+    "synergy": "Synergy: Pairs with combo chains & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "starfall-totem",
+    "name": "Starfall Totem",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "preview",
+      "vision"
+    ],
+    "effect": "Gain +3 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & preview stacks.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "starfall-heart",
+    "name": "Starfall Heart",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "preview",
+      "vision"
+    ],
+    "effect": "Gain +4 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & preview stacks.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "harvest-draft",
+    "name": "Harvest Draft",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "economy"
+    ],
+    "effect": "Consume to restore 6 health and gain 3 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & coin engines.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "harvest-salve",
+    "name": "Harvest Salve",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "healing",
+      "economy"
+    ],
+    "effect": "Consume to restore 12 health and gain 6 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & coin engines.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "harvest-engine",
+    "name": "Harvest Engine",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "economy",
+      "shield"
+    ],
+    "effect": "Reduce counter damage by 3. Earn +3 coins after victories.",
+    "synergy": "Synergy: Pairs with coin engines & defensive charms.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "harvest-core",
+    "name": "Harvest Core",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "economy",
+      "shield"
+    ],
+    "effect": "Reduce counter damage by 4. Earn +4 coins after victories.",
+    "synergy": "Synergy: Pairs with coin engines & defensive charms.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "warden-brew",
+    "name": "Warden Brew",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "shield",
+      "combo"
+    ],
+    "effect": "Consume to gain 1 free dauber and boost combo by 1.",
+    "synergy": "Synergy: Pairs with defensive charms & combo chains.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "warden-remedy",
+    "name": "Warden Remedy",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "shield",
+      "combo"
+    ],
+    "effect": "Consume to gain 2 free daubers and boost combo by 2.",
+    "synergy": "Synergy: Pairs with defensive charms & combo chains.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "warden-sigil",
+    "name": "Warden Sigil",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "shield",
+      "status"
+    ],
+    "effect": "Reduce counter damage by 3. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with defensive charms & status inflictors.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "warden-crown",
+    "name": "Warden Crown",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "shield",
+      "status"
+    ],
+    "effect": "Reduce counter damage by 4. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with defensive charms & status inflictors.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "echo-infusion",
+    "name": "Echo Infusion",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "combo",
+      "luck"
+    ],
+    "effect": "Consume to gain 3 coins and boost combo by 1.",
+    "synergy": "Synergy: Pairs with combo chains & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "echo-vial",
+    "name": "Echo Vial",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "combo",
+      "luck"
+    ],
+    "effect": "Consume to gain 6 coins and boost combo by 2.",
+    "synergy": "Synergy: Pairs with combo chains & fortune items.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "echo-charm",
+    "name": "Echo Charm",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "preview",
+      "combo"
+    ],
+    "effect": "Gain +3 preview calls. Combo chains add +3 damage per hit.",
+    "synergy": "Synergy: Pairs with vision gear & combo chains.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "echo-aegis",
+    "name": "Echo Aegis",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "preview",
+      "combo"
+    ],
+    "effect": "Gain +4 preview calls. Combo chains add +4 damage per hit.",
+    "synergy": "Synergy: Pairs with vision gear & combo chains.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "emberstorm-tonic",
+    "name": "Emberstorm Tonic",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "damage",
+      "shield"
+    ],
+    "effect": "Consume to blast the foe for 5 damage and gain 1 free dauber.",
+    "synergy": "Synergy: Pairs with aggressive builds & defensive charms.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "emberstorm-elixir",
+    "name": "Emberstorm Elixir",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "damage",
+      "shield"
+    ],
+    "effect": "Consume to blast the foe for 10 damage and gain 2 free daubers.",
+    "synergy": "Synergy: Pairs with aggressive builds & defensive charms.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "emberstorm-totem",
+    "name": "Emberstorm Totem",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "damage",
+      "shield"
+    ],
+    "effect": "Marked numbers deal +3 damage. Reduce counter damage by 3.",
+    "synergy": "Synergy: Pairs with aggressive builds & defensive charms.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "emberstorm-heart",
+    "name": "Emberstorm Heart",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "damage",
+      "shield"
+    ],
+    "effect": "Marked numbers deal +4 damage. Reduce counter damage by 4.",
+    "synergy": "Synergy: Pairs with aggressive builds & defensive charms.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "silt-draft",
+    "name": "Silt Draft",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "economy",
+      "healing"
+    ],
+    "effect": "Consume to restore 6 health and gain 3 coins.",
+    "synergy": "Synergy: Pairs with coin engines & other healing relics.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "silt-salve",
+    "name": "Silt Salve",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "economy",
+      "healing"
+    ],
+    "effect": "Consume to restore 12 health and gain 6 coins.",
+    "synergy": "Synergy: Pairs with coin engines & other healing relics.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "silt-engine",
+    "name": "Silt Engine",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "economy",
+      "status"
+    ],
+    "effect": "Earn +3 coins after victories. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with coin engines & status inflictors.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "silt-core",
+    "name": "Silt Core",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "economy",
+      "status"
+    ],
+    "effect": "Earn +4 coins after victories. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with coin engines & status inflictors.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "glacier-brew",
+    "name": "Glacier Brew",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "shield",
+      "healing"
+    ],
+    "effect": "Consume to restore 6 health and gain 1 free dauber.",
+    "synergy": "Synergy: Pairs with defensive charms & other healing relics.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "glacier-remedy",
+    "name": "Glacier Remedy",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "shield",
+      "healing"
+    ],
+    "effect": "Consume to restore 12 health and gain 2 free daubers.",
+    "synergy": "Synergy: Pairs with defensive charms & other healing relics.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "glacier-sigil",
+    "name": "Glacier Sigil",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "shield",
+      "preview"
+    ],
+    "effect": "Reduce counter damage by 3. Gain +3 preview calls.",
+    "synergy": "Synergy: Pairs with defensive charms & vision gear.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "glacier-crown",
+    "name": "Glacier Crown",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "shield",
+      "preview"
+    ],
+    "effect": "Reduce counter damage by 4. Gain +4 preview calls.",
+    "synergy": "Synergy: Pairs with defensive charms & vision gear.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "twilight-infusion",
+    "name": "Twilight Infusion",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "luck"
+    ],
+    "effect": "Consume to restore 6 health and gain 3 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & fortune items.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "twilight-vial",
+    "name": "Twilight Vial",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "healing",
+      "luck"
+    ],
+    "effect": "Consume to restore 12 health and gain 6 coins.",
+    "synergy": "Synergy: Pairs with other healing relics & fortune items.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "twilight-charm",
+    "name": "Twilight Charm",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "vision",
+      "status"
+    ],
+    "effect": "Gain +3 preview calls. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with preview stacks & status inflictors.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "twilight-aegis",
+    "name": "Twilight Aegis",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "vision",
+      "status"
+    ],
+    "effect": "Gain +4 preview calls. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with preview stacks & status inflictors.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "nova-tonic",
+    "name": "Nova Tonic",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Consume to blast the foe for 5 damage and boost combo by 1.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "nova-elixir",
+    "name": "Nova Elixir",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 2,
+    "tags": [
+      "damage",
+      "combo"
+    ],
+    "effect": "Consume to blast the foe for 10 damage and boost combo by 2.",
+    "synergy": "Synergy: Pairs with aggressive builds & combo chains.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "nova-totem",
+    "name": "Nova Totem",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "preview",
+      "damage"
+    ],
+    "effect": "Marked numbers deal +3 damage. Gain +3 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & aggressive builds.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "nova-heart",
+    "name": "Nova Heart",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "preview",
+      "damage"
+    ],
+    "effect": "Marked numbers deal +4 damage. Gain +4 preview calls.",
+    "synergy": "Synergy: Pairs with vision gear & aggressive builds.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "mycelium-draft",
+    "name": "Mycelium Draft",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 1,
+    "tags": [
+      "healing",
+      "status"
+    ],
+    "effect": "Consume to restore 6 health and expose the boss for 1 turn.",
+    "synergy": "Synergy: Pairs with other healing relics & status inflictors.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "mycelium-salve",
+    "name": "Mycelium Salve",
+    "type": "consumable",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "healing",
+      "status"
+    ],
+    "effect": "Consume to restore 12 health and expose the boss for 2 turns.",
+    "synergy": "Synergy: Pairs with other healing relics & status inflictors.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "mycelium-engine",
+    "name": "Mycelium Engine",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "status",
+      "economy"
+    ],
+    "effect": "Earn +3 coins after victories. Lines apply Vulnerable for 3 turns.",
+    "synergy": "Synergy: Pairs with status inflictors & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "mycelium-core",
+    "name": "Mycelium Core",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "status",
+      "economy"
+    ],
+    "effect": "Earn +4 coins after victories. Lines apply Vulnerable for 4 turns.",
+    "synergy": "Synergy: Pairs with status inflictors & coin engines.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "free-space-charm",
+    "name": "Free Space Charm",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 4,
+    "tags": [
+      "shield",
+      "combo"
+    ],
+    "effect": "Unlocks the central star and reduces counter damage by 2.",
+    "synergy": "Synergy: Pairs with defensive charms & combo chains.",
+    "icon": "item-frost"
+  },
+  {
     "id": "arcane-dauber",
     "name": "Arcane Dauber",
-    "type": "relic",
+    "type": "modifier",
     "rarity": "rare",
-    "cost": 7,
-    "tags": ["arcane", "combo"],
+    "cost": 5,
+    "tags": [
+      "damage",
+      "combo"
+    ],
     "effect": "Lines deal +2 damage per combo tier.",
-    "synergy": "Stacks with other combo relics.",
+    "synergy": "Synergy: Pairs with combo chains & aggressive builds.",
     "icon": "item-arcane"
+  },
+  {
+    "id": "embershard",
+    "name": "Embershard",
+    "type": "modifier",
+    "rarity": "uncommon",
+    "cost": 3,
+    "tags": [
+      "damage",
+      "status"
+    ],
+    "effect": "First line each floor inflicts Burn for ongoing damage.",
+    "synergy": "Synergy: Pairs with aggressive builds & status inflictors.",
+    "icon": "item-ember"
+  },
+  {
+    "id": "frost-lantern",
+    "name": "Frost Lantern",
+    "type": "modifier",
+    "rarity": "legendary",
+    "cost": 10,
+    "tags": [
+      "shield",
+      "status"
+    ],
+    "effect": "Applies Chill whenever you clear a line, delaying counter attacks.",
+    "synergy": "Synergy: Pairs with defensive charms & status inflictors.",
+    "icon": "item-frost"
   },
   {
     "id": "lucky-charm",
     "name": "Lucky Charm",
-    "type": "relic",
+    "type": "modifier",
     "rarity": "uncommon",
-    "cost": 6,
-    "tags": ["luck"],
-    "effect": "Reveal +1 upcoming call. Extra +1 if you have another luck item.",
-    "synergy": "Pairs with Seer's Lens and Fortune Teller event.",
+    "cost": 2,
+    "tags": [
+      "luck",
+      "vision"
+    ],
+    "effect": "Gain +1 preview call and +1 coin after victories.",
+    "synergy": "Synergy: Pairs with fortune items & preview stacks.",
     "icon": "item-lucky"
+  },
+  {
+    "id": "seer-lens",
+    "name": "Seer Lens",
+    "type": "modifier",
+    "rarity": "rare",
+    "cost": 5,
+    "tags": [
+      "preview",
+      "vision"
+    ],
+    "effect": "Gain +2 preview calls and rerolls cost 1 less coin.",
+    "synergy": "Synergy: Pairs with vision gear & preview stacks.",
+    "icon": "item-seer"
   },
   {
     "id": "cursed-brand",
     "name": "Cursed Brand",
-    "type": "curse",
-    "rarity": "epic",
+    "type": "modifier",
+    "rarity": "legendary",
     "cost": 0,
-    "tags": ["curse", "risk"],
-    "effect": "Boss gains Vulnerable but you take 1 damage whenever you whiff a call.",
-    "synergy": "Remove with Purifying Flame or embrace with other curses.",
+    "tags": [
+      "damage",
+      "status"
+    ],
+    "effect": "Missed calls deal 2 damage to you but attacks hit harder.",
+    "synergy": "Synergy: Pairs with aggressive builds & status inflictors.",
     "icon": "item-curse"
   },
   {
@@ -37,43 +1502,12 @@
     "name": "Healing Brew",
     "type": "consumable",
     "rarity": "common",
-    "cost": 4,
-    "tags": ["healing"],
-    "effect": "Restore 1 heart immediately.",
-    "synergy": "Doubles if used on Verdant Grove floors.",
+    "cost": 1,
+    "tags": [
+      "healing"
+    ],
+    "effect": "Consume to restore 6 health.",
+    "synergy": "Synergy: Pairs with other healing relics.",
     "icon": "item-brew"
-  },
-  {
-    "id": "frost-lantern",
-    "name": "Frost Lantern",
-    "type": "relic",
-    "rarity": "legendary",
-    "cost": 9,
-    "tags": ["frost", "control"],
-    "effect": "Applies Chill each time you clear a line, delaying boss attacks.",
-    "synergy": "Boosted by Aurora Sanctum biome.",
-    "icon": "item-frost"
-  },
-  {
-    "id": "seer-lens",
-    "name": "Seer's Lens",
-    "type": "relic",
-    "rarity": "rare",
-    "cost": 8,
-    "tags": ["vision", "luck"],
-    "effect": "Start each floor with +2 preview calls and rerolls cost 1 less coin.",
-    "synergy": "Unlocks Fortune Teller event outcomes.",
-    "icon": "item-seer"
-  },
-  {
-    "id": "embershard",
-    "name": "Ember Shard",
-    "type": "relic",
-    "rarity": "uncommon",
-    "cost": 5,
-    "tags": ["burn", "damage"],
-    "effect": "First line each floor inflicts Burn for 3 extra damage over time.",
-    "synergy": "Combine with Phoenix boss codex for bonus.",
-    "icon": "item-ember"
   }
 ]
