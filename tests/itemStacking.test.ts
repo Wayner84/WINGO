@@ -30,12 +30,14 @@ describe('Inventory stacking', () => {
     const relic = items.find((item) => item.id === 'lucky-charm');
     if (!relic) throw new Error('Missing lucky charm');
     run.player.coins = 20;
+    run.shopAvailable = true;
     run.shop = [
       { item: relic, price: 5, sold: false }
     ];
     run = game.buyItem(meta, run, relic.id);
     expect(run.inventory.find((i) => i.def.id === relic.id)?.quantity).toBe(1);
     run.player.coins = 20;
+    run.shopAvailable = true;
     run.shop = [
       { item: relic, price: 5, sold: false }
     ];
