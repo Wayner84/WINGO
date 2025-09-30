@@ -1,0 +1,79 @@
+[
+  {
+    "id": "arcane-dauber",
+    "name": "Arcane Dauber",
+    "type": "relic",
+    "rarity": "rare",
+    "cost": 7,
+    "tags": ["arcane", "combo"],
+    "effect": "Lines deal +2 damage per combo tier.",
+    "synergy": "Stacks with other combo relics.",
+    "icon": "item-arcane"
+  },
+  {
+    "id": "lucky-charm",
+    "name": "Lucky Charm",
+    "type": "relic",
+    "rarity": "uncommon",
+    "cost": 6,
+    "tags": ["luck"],
+    "effect": "Reveal +1 upcoming call. Extra +1 if you have another luck item.",
+    "synergy": "Pairs with Seer's Lens and Fortune Teller event.",
+    "icon": "item-lucky"
+  },
+  {
+    "id": "cursed-brand",
+    "name": "Cursed Brand",
+    "type": "curse",
+    "rarity": "epic",
+    "cost": 0,
+    "tags": ["curse", "risk"],
+    "effect": "Boss gains Vulnerable but you take 1 damage whenever you whiff a call.",
+    "synergy": "Remove with Purifying Flame or embrace with other curses.",
+    "icon": "item-curse"
+  },
+  {
+    "id": "healing-brew",
+    "name": "Healing Brew",
+    "type": "consumable",
+    "rarity": "common",
+    "cost": 4,
+    "tags": ["healing"],
+    "effect": "Restore 1 heart immediately.",
+    "synergy": "Doubles if used on Verdant Grove floors.",
+    "icon": "item-brew"
+  },
+  {
+    "id": "frost-lantern",
+    "name": "Frost Lantern",
+    "type": "relic",
+    "rarity": "legendary",
+    "cost": 9,
+    "tags": ["frost", "control"],
+    "effect": "Applies Chill each time you clear a line, delaying boss attacks.",
+    "synergy": "Boosted by Aurora Sanctum biome.",
+    "icon": "item-frost"
+  },
+  {
+    "id": "seer-lens",
+    "name": "Seer's Lens",
+    "type": "relic",
+    "rarity": "rare",
+    "cost": 8,
+    "tags": ["vision", "luck"],
+    "effect": "Start each floor with +2 preview calls and rerolls cost 1 less coin.",
+    "synergy": "Unlocks Fortune Teller event outcomes.",
+    "icon": "item-seer"
+  },
+  {
+    "id": "embershard",
+    "name": "Ember Shard",
+    "type": "relic",
+    "rarity": "uncommon",
+    "cost": 5,
+    "tags": ["burn", "damage"],
+    "effect": "First line each floor inflicts Burn for 3 extra damage over time.",
+    "synergy": "Combine with Phoenix boss codex for bonus.",
+    "icon": "item-ember"
+  }
+]

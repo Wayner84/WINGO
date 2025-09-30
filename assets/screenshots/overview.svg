@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a" />
+      <stop offset="1" stop-color="#020617" />
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)" rx="32" />
+  <rect x="40" y="40" width="580" height="320" rx="24" fill="#172554" stroke="#334155" stroke-width="4" />
+  <rect x="660" y="40" width="260" height="200" rx="24" fill="#1e293b" stroke="#334155" stroke-width="4" />
+  <rect x="660" y="260" width="260" height="140" rx="24" fill="#1e293b" stroke="#334155" stroke-width="4" />
+  <rect x="40" y="380" width="880" height="120" rx="24" fill="#111827" stroke="#334155" stroke-width="4" />
+  <text x="70" y="80" fill="#bae6fd" font-family="'Inter', sans-serif" font-size="28" font-weight="bold">Board</text>
+  <text x="690" y="80" fill="#bae6fd" font-family="'Inter', sans-serif" font-size="24" font-weight="bold">Boss</text>
+  <text x="690" y="290" fill="#bae6fd" font-family="'Inter', sans-serif" font-size="24" font-weight="bold">Shop & Events</text>
+  <text x="70" y="440" fill="#bae6fd" font-family="'Inter', sans-serif" font-size="24" font-weight="bold">Call Log & Controls</text>
+</svg>
