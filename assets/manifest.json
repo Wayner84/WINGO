@@ -1,0 +1,20 @@
+{
+  "boss-slime": "icons/boss-slime.svg",
+  "boss-lich": "icons/boss-lich.svg",
+  "boss-golem": "icons/boss-golem.svg",
+  "boss-phoenix": "icons/boss-phoenix.svg",
+  "boss-titan": "icons/boss-titan.svg",
+  "boss-harbinger": "icons/boss-harbinger.svg",
+  "item-arcane": "icons/item-arcane.svg",
+  "item-lucky": "icons/item-lucky.svg",
+  "item-curse": "icons/item-curse.svg",
+  "item-brew": "icons/item-brew.svg",
+  "item-frost": "icons/item-frost.svg",
+  "item-seer": "icons/item-seer.svg",
+  "item-ember": "icons/item-ember.svg",
+  "status-burn": "icons/status-burn.svg",
+  "status-chill": "icons/status-chill.svg",
+  "status-ooze": "icons/status-ooze.svg",
+  "status-curse": "icons/status-curse.svg",
+  "status-vulnerable": "icons/status-vulnerable.svg"
+}

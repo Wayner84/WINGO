@@ -1,0 +1,80 @@
+{
+  "crypt": {
+    "name": "Gloom Crypt",
+    "palette": "verdant",
+    "floors": [
+      {
+        "id": "dungeon-slime",
+        "name": "Dungeon Slime",
+        "baseHp": 36,
+        "damage": 1,
+        "elite": false,
+        "status": ["ooze"],
+        "icon": "boss-slime"
+      },
+      {
+        "id": "catacomb-lich",
+        "name": "Catacomb Lich",
+        "baseHp": 48,
+        "damage": 2,
+        "elite": true,
+        "status": ["curse"],
+        "icon": "boss-lich"
+      }
+    ],
+    "shopTags": ["healing", "arcane", "luck"],
+    "events": ["shrine", "mystery", "fortune-teller"]
+  },
+  "emberforge": {
+    "name": "Emberforge",
+    "palette": "ember",
+    "floors": [
+      {
+        "id": "molten-golem",
+        "name": "Molten Golem",
+        "baseHp": 42,
+        "damage": 2,
+        "elite": false,
+        "status": ["burn"],
+        "icon": "boss-golem"
+      },
+      {
+        "id": "phoenix-warmind",
+        "name": "Phoenix Warmind",
+        "baseHp": 55,
+        "damage": 3,
+        "elite": true,
+        "status": ["burn", "rebirth"],
+        "icon": "boss-phoenix"
+      }
+    ],
+    "shopTags": ["burn", "damage"],
+    "events": ["smuggler", "forge", "mystery"]
+  },
+  "aurora": {
+    "name": "Aurora Sanctum",
+    "palette": "default",
+    "floors": [
+      {
+        "id": "frost-titan",
+        "name": "Frost Titan",
+        "baseHp": 44,
+        "damage": 2,
+        "elite": false,
+        "status": ["chill"],
+        "icon": "boss-titan"
+      },
+      {
+        "id": "aurora-harbinger",
+        "name": "Aurora Harbinger",
+        "baseHp": 60,
+        "damage": 3,
+        "elite": true,
+        "status": ["chill", "vulnerable"],
+        "icon": "boss-harbinger"
+      }
+    ],
+    "shopTags": ["frost", "vision"],
+    "events": ["shrine", "mystery", "aurora"]
+  }
+}

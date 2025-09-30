@@ -1,0 +1,50 @@
+{
+  "startingHearts": 3,
+  "startingCoins": 10,
+  "board": {
+    "columns": ["B", "I", "N", "G", "O"],
+    "numbersPerColumn": 15,
+    "freeIndex": 12
+  },
+  "callCapBase": 30,
+  "callCapPerFloor": -2,
+  "previewBase": 2,
+  "combo": {
+    "hitBonus": 1,
+    "lineBonus": 2,
+    "max": 5
+  },
+  "damage": {
+    "hit": 1,
+    "lineSingle": 6,
+    "lineDouble": 12,
+    "lineTriple": 20,
+    "bingo": 34
+  },
+  "adaptive": {
+    "threatStart": 1,
+    "thresholds": [0.6, 0.9, 1.2],
+    "bossMultiplier": 0.18,
+    "playerReward": 0.4
+  },
+  "floorModifiers": [
+    {
+      "id": "fog-of-war",
+      "label": "Fog of War",
+      "description": "Preview reduced by 1 and cells hide tooltips until marked.",
+      "effect": {"previewDelta": -1, "tooltipHidden": true}
+    },
+    {
+      "id": "wild-magic",
+      "label": "Wild Magic",
+      "description": "Calls may trigger random status effects on either side.",
+      "effect": {"wildMagic": true}
+    },
+    {
+      "id": "blessing",
+      "label": "Blessing",
+      "description": "Start with combo level 1 and heal 1 heart.",
+      "effect": {"comboStart": 1, "heal": 1}
+    }
+  ]
+}
