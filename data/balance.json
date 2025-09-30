@@ -1,50 +1,253 @@
 {
-  "startingHearts": 3,
-  "startingCoins": 10,
   "board": {
-    "columns": ["B", "I", "N", "G", "O"],
-    "numbersPerColumn": 15,
-    "freeIndex": 12
+    "columns": ["W", "I", "N", "G", "O", "Q", "U", "E", "S", "T", "!"],
+    "numbersPerColumn": 15
   },
-  "callCapBase": 30,
-  "callCapPerFloor": -2,
-  "previewBase": 2,
+  "difficulties": {
+    "easy": {
+      "id": "easy",
+      "label": "Easy",
+      "boardSize": 5,
+      "startingHearts": 100,
+      "startingCoins": 0,
+      "callCapBase": 45,
+      "callCapPerFloor": 5,
+      "distinctNumbers": 4,
+      "rewardCoins": { "min": 5, "max": 10 },
+      "negativeModifierFloors": [3]
+    },
+    "semi-easy": {
+      "id": "semi-easy",
+      "label": "Semi-Easy",
+      "boardSize": 7,
+      "startingHearts": 110,
+      "startingCoins": 0,
+      "callCapBase": 52,
+      "callCapPerFloor": 4,
+      "distinctNumbers": 8,
+      "rewardCoins": { "min": 6, "max": 12 },
+      "negativeModifierFloors": [2, 3]
+    },
+    "less-easy": {
+      "id": "less-easy",
+      "label": "Less-Easy",
+      "boardSize": 9,
+      "startingHearts": 120,
+      "startingCoins": 0,
+      "callCapBase": 58,
+      "callCapPerFloor": 3,
+      "distinctNumbers": 12,
+      "rewardCoins": { "min": 7, "max": 14 },
+      "negativeModifierFloors": [1, 2, 3]
+    },
+    "hard": {
+      "id": "hard",
+      "label": "Hard",
+      "boardSize": 11,
+      "startingHearts": 130,
+      "startingCoins": 0,
+      "callCapBase": 62,
+      "callCapPerFloor": 2,
+      "distinctNumbers": 16,
+      "rewardCoins": { "min": 8, "max": 16 },
+      "negativeModifierFloors": [0, 1, 2, 3]
+    }
+  },
+  "previewBase": 3,
   "combo": {
-    "hitBonus": 1,
-    "lineBonus": 2,
-    "max": 5
+    "hitBonus": 2,
+    "lineBonus": 4,
+    "max": 10
   },
   "damage": {
-    "hit": 1,
-    "lineSingle": 6,
-    "lineDouble": 12,
-    "lineTriple": 20,
-    "bingo": 34
+    "hit": 3,
+    "lineSingle": 12,
+    "lineDouble": 20,
+    "lineTriple": 32,
+    "bingo": 48
   },
   "adaptive": {
     "threatStart": 1,
-    "thresholds": [0.6, 0.9, 1.2],
-    "bossMultiplier": 0.18,
-    "playerReward": 0.4
+    "thresholds": [0.6, 0.9, 1.25],
+    "bossMultiplier": 0.2,
+    "playerReward": 0.35
   },
+  "encounterModifiers": [
+    {
+      "id": "marching-echo",
+      "name": "Marching Echo",
+      "description": "After the first call the next five numbers advance by +5.",
+      "effect": { "sequenceOffset": { "offset": 5, "count": 5 } }
+    },
+    {
+      "id": "echo-repeater",
+      "name": "Echo Repeater",
+      "description": "The draw repeats upward by +2 for the next eight calls.",
+      "effect": { "sequenceOffset": { "offset": 2, "count": 8 } }
+    },
+    {
+      "id": "jagged-lattice",
+      "name": "Jagged Lattice",
+      "description": "W and I columns are blocked for four calls.",
+      "effect": { "blockedColumns": { "columns": ["W", "I"], "calls": 4 } }
+    },
+    {
+      "id": "thorn-bloom",
+      "name": "Thorn Bloom",
+      "description": "N and G columns cannot be marked for the next three calls.",
+      "effect": { "blockedColumns": { "columns": ["N", "G"], "calls": 3 } }
+    },
+    {
+      "id": "void-silence",
+      "name": "Void Silence",
+      "description": "O column is silenced for six calls.",
+      "effect": { "blockedColumns": { "columns": ["O"], "calls": 6 } }
+    },
+    {
+      "id": "oracle-fade",
+      "name": "Oracle Fade",
+      "description": "Preview reduced by 2.",
+      "effect": { "previewPenalty": 2 }
+    },
+    {
+      "id": "aurora-dim",
+      "name": "Aurora Dim",
+      "description": "Preview reduced by 3.",
+      "effect": { "previewPenalty": 3 }
+    },
+    {
+      "id": "ticking-curse",
+      "name": "Ticking Curse",
+      "description": "Call cap reduced by 6 for this battle.",
+      "effect": { "callCapModifier": -6 }
+    },
+    {
+      "id": "pressure-front",
+      "name": "Pressure Front",
+      "description": "Call cap reduced by 4 and counter attacks deal +1 damage.",
+      "effect": { "callCapModifier": -4, "bossDamageBonus": 1 }
+    },
+    {
+      "id": "venomous-pace",
+      "name": "Venomous Pace",
+      "description": "Counter attacks deal +3 damage.",
+      "effect": { "bossDamageBonus": 3 }
+    },
+    {
+      "id": "raging-tempest",
+      "name": "Raging Tempest",
+      "description": "Counter attacks deal +4 damage.",
+      "effect": { "bossDamageBonus": 4 }
+    },
+    {
+      "id": "measured-steps",
+      "name": "Measured Steps",
+      "description": "After the first draw the next three calls jump by +10.",
+      "effect": { "sequenceOffset": { "offset": 10, "count": 3 } }
+    },
+    {
+      "id": "mirrored-signal",
+      "name": "Mirrored Signal",
+      "description": "Upcoming calls creep upward by +1 for nine draws.",
+      "effect": { "sequenceOffset": { "offset": 1, "count": 9 } }
+    },
+    {
+      "id": "wing-cutoff",
+      "name": "Wing Cutoff",
+      "description": "W, I and N are blocked for two calls.",
+      "effect": { "blockedColumns": { "columns": ["W", "I", "N"], "calls": 2 } }
+    },
+    {
+      "id": "sudden-storm",
+      "name": "Sudden Storm",
+      "description": "Preview reduced by 1 and counter attacks deal +2 damage.",
+      "effect": { "previewPenalty": 1, "bossDamageBonus": 2 }
+    },
+    {
+      "id": "tremor-pattern",
+      "name": "Tremor Pattern",
+      "description": "Numbers accelerate by +4 for six consecutive calls.",
+      "effect": { "sequenceOffset": { "offset": 4, "count": 6 } }
+    },
+    {
+      "id": "quake-barrier",
+      "name": "Quake Barrier",
+      "description": "Call cap reduced by 3 and G column locks for four calls.",
+      "effect": { "callCapModifier": -3, "blockedColumns": { "columns": ["G"], "calls": 4 } }
+    },
+    {
+      "id": "chilling-drizzle",
+      "name": "Chilling Drizzle",
+      "description": "Preview reduced by 1 and call cap reduced by 2.",
+      "effect": { "previewPenalty": 1, "callCapModifier": -2 }
+    },
+    {
+      "id": "relentless-pursuit",
+      "name": "Relentless Pursuit",
+      "description": "Call cap reduced by 2 and counter attacks deal +2 damage.",
+      "effect": { "callCapModifier": -2, "bossDamageBonus": 2 }
+    },
+    {
+      "id": "leaden-hush",
+      "name": "Leaden Hush",
+      "description": "I and O columns are silenced for five calls.",
+      "effect": { "blockedColumns": { "columns": ["I", "O"], "calls": 5 } }
+    },
+    {
+      "id": "static-field",
+      "name": "Static Field",
+      "description": "Preview reduced by 2 and N column is blocked for two calls.",
+      "effect": { "previewPenalty": 2, "blockedColumns": { "columns": ["N"], "calls": 2 } }
+    },
+    {
+      "id": "flickering-future",
+      "name": "Flickering Future",
+      "description": "Preview reduced by 4.",
+      "effect": { "previewPenalty": 4 }
+    },
+    {
+      "id": "surge-delay",
+      "name": "Surge Delay",
+      "description": "Numbers advance by +3 for seven calls and preview reduced by 1.",
+      "effect": { "sequenceOffset": { "offset": 3, "count": 7 }, "previewPenalty": 1 }
+    },
+    {
+      "id": "rune-throttle",
+      "name": "Rune Throttle",
+      "description": "Call cap reduced by 8.",
+      "effect": { "callCapModifier": -8 }
+    },
+    {
+      "id": "silence-edict",
+      "name": "Silence Edict",
+      "description": "W, G and O columns are blocked for three calls and counter attacks deal +1 damage.",
+      "effect": { "blockedColumns": { "columns": ["W", "G", "O"], "calls": 3 }, "bossDamageBonus": 1 }
+    }
+  ],
   "floorModifiers": [
     {
       "id": "fog-of-war",
       "label": "Fog of War",
       "description": "Preview reduced by 1 and cells hide tooltips until marked.",
-      "effect": {"previewDelta": -1, "tooltipHidden": true}
+      "effect": { "previewDelta": -1, "tooltipHidden": true }
     },
     {
       "id": "wild-magic",
       "label": "Wild Magic",
       "description": "Calls may trigger random status effects on either side.",
-      "effect": {"wildMagic": true}
+      "effect": { "wildMagic": true }
     },
     {
       "id": "blessing",
       "label": "Blessing",
       "description": "Start with combo level 1 and heal 1 heart.",
-      "effect": {"comboStart": 1, "heal": 1}
+      "effect": { "comboStart": 1, "heal": 1 }
+    },
+    {
+      "id": "guiding-lantern",
+      "label": "Guiding Lantern",
+      "description": "Preview increased by 1 for this floor.",
+      "effect": { "previewDelta": 1 }
     }
   ]
 }

@@ -26,7 +26,7 @@ describe('Inventory stacking', () => {
   it('increments quantity when buying duplicate relics', () => {
     const game = new GameService(balance, biomes, items);
     const rng = new SeededRng(7);
-    let run = game.createRun(meta, rng, { seed: 7, biomeId: 'crypt' });
+    let run = game.createRun(meta, rng, { seed: 7, biomeId: 'crypt', difficultyId: 'easy' });
     const relic = items.find((item) => item.id === 'lucky-charm');
     if (!relic) throw new Error('Missing lucky charm');
     run.player.coins = 20;

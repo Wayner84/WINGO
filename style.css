@@ -121,12 +121,14 @@ main {
   grid-template-columns: minmax(0, 1fr);
   padding: clamp(12px, 5vw, 48px);
   gap: 16px;
+  min-height: 0;
 }
 
 .game-layout {
   display: grid;
   gap: 18px;
   grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1fr);
+  height: 100%;
 }
 
 @media (max-width: 960px) {
@@ -141,8 +143,15 @@ main {
   border: 1px solid var(--outline);
   box-shadow: var(--shadow);
   padding: clamp(16px, 4vw, 22px);
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel > .panel {
+  flex: 1 1 auto;
 }
 
 .panel h2,
@@ -156,9 +165,10 @@ main {
 }
 
 .grid {
+  --board-size: 5;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(var(--board-size), minmax(0, 1fr));
+  gap: clamp(6px, 1vw, 12px);
 }
 
 .cell {
@@ -169,21 +179,10 @@ main {
   display: grid;
   place-items: center;
   font-weight: 900;
-  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-size: clamp(0.75rem, 2.2vw, 1.6rem);
   position: relative;
   cursor: pointer;
   transition: transform 120ms ease, box-shadow 160ms ease;
-}
-
-.cell[data-free='true']::after {
-  content: '★';
-  position: absolute;
-  inset: 12px;
-  display: grid;
-  place-items: center;
-  color: var(--accent);
-  opacity: 0.65;
-  font-size: 1.6rem;
 }
 
 .cell[data-marked='true'] {
@@ -236,17 +235,28 @@ main {
 }
 
 .log {
-  max-height: 220px;
+  flex: 1 1 auto;
   overflow-y: auto;
   font-size: 0.92rem;
   line-height: 1.45;
   padding-right: 4px;
+  display: grid;
+  gap: 6px;
 }
 
 .inventory-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 10px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.shop-list {
+  display: grid;
+  gap: 12px;
+  flex: 1 1 auto;
+  overflow-y: auto;
 }
 
 .inventory-chip {

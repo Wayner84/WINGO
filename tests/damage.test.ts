@@ -27,7 +27,7 @@ describe('Damage resolution', () => {
     const game = new GameService(balance, biomes, items);
     const meta = testMeta();
     const rng = new SeededRng(99);
-    let run = game.createRun(meta, rng, { seed: 99, biomeId: 'crypt' });
+    let run = game.createRun(meta, rng, { seed: 99, biomeId: 'crypt', difficultyId: 'easy' });
     run.deck = [7, 12, 15];
     run.preview = [];
     // Force top row to create a bingo on 7
@@ -44,7 +44,7 @@ describe('Damage resolution', () => {
     const game = new GameService(balance, biomes, items);
     const meta = testMeta();
     const rng = new SeededRng(23);
-    let run = game.createRun(meta, rng, { seed: 23, biomeId: 'crypt' });
+    let run = game.createRun(meta, rng, { seed: 23, biomeId: 'crypt', difficultyId: 'easy' });
     const arcane = items.find((item) => item.id === 'arcane-dauber');
     if (!arcane) throw new Error('Arcane Dauber missing');
     run.inventory.push({ def: arcane, quantity: 1 });
