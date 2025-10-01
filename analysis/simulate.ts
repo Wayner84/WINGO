@@ -39,7 +39,11 @@ const results: ResultRow[] = [];
 for (let i = 0; i < 1000; i += 1) {
   const seed = 1000 + i;
   const rng = new SeededRng(seed);
-  let run = game.createRun(meta, rng, { seed, biomeId: meta.unlocks.biomes[i % meta.unlocks.biomes.length] });
+  let run = game.createRun(meta, rng, {
+    seed,
+    biomeId: meta.unlocks.biomes[i % meta.unlocks.biomes.length],
+    difficultyId: 'easy'
+  });
   while (!run.summary) {
     const outcome = game.callNext(meta, run, rng);
     run = outcome.state;
