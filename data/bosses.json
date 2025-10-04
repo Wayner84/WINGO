@@ -6,23 +6,41 @@
       {
         "id": "dungeon-slime",
         "name": "Dungeon Slime",
-        "baseHp": 36,
-        "damage": 1,
+        "baseHp": 70,
+        "damage": 5,
         "elite": false,
         "status": ["ooze"],
         "icon": "boss-slime"
       },
       {
+        "id": "crypt-specter",
+        "name": "Crypt Specter",
+        "baseHp": 85,
+        "damage": 6,
+        "elite": false,
+        "status": ["curse"],
+        "icon": "boss-lich"
+      },
+      {
         "id": "catacomb-lich",
         "name": "Catacomb Lich",
-        "baseHp": 48,
-        "damage": 2,
+        "baseHp": 105,
+        "damage": 7,
         "elite": true,
-        "status": ["curse"],
+        "status": ["curse", "vulnerable"],
+        "icon": "boss-lich"
+      },
+      {
+        "id": "ossuary-king",
+        "name": "Ossuary King",
+        "baseHp": 150,
+        "damage": 8,
+        "elite": true,
+        "status": ["curse", "rebirth"],
         "icon": "boss-lich"
       }
     ],
-    "shopTags": ["healing", "arcane", "luck"],
+    "shopTags": ["healing", "shield", "status"],
     "events": ["shrine", "mystery", "fortune-teller"]
   },
   "emberforge": {
@@ -32,23 +50,41 @@
       {
         "id": "molten-golem",
         "name": "Molten Golem",
-        "baseHp": 42,
-        "damage": 2,
+        "baseHp": 80,
+        "damage": 6,
         "elite": false,
         "status": ["burn"],
         "icon": "boss-golem"
       },
       {
+        "id": "ember-drake",
+        "name": "Ember Drake",
+        "baseHp": 95,
+        "damage": 7,
+        "elite": false,
+        "status": ["burn"],
+        "icon": "boss-phoenix"
+      },
+      {
+        "id": "slag-hydra",
+        "name": "Slag Hydra",
+        "baseHp": 115,
+        "damage": 8,
+        "elite": true,
+        "status": ["burn", "shield"],
+        "icon": "boss-golem"
+      },
+      {
         "id": "phoenix-warmind",
         "name": "Phoenix Warmind",
-        "baseHp": 55,
-        "damage": 3,
+        "baseHp": 155,
+        "damage": 9,
         "elite": true,
         "status": ["burn", "rebirth"],
         "icon": "boss-phoenix"
       }
     ],
-    "shopTags": ["burn", "damage"],
+    "shopTags": ["damage", "burn", "economy"],
     "events": ["smuggler", "forge", "mystery"]
   },
   "aurora": {
@@ -58,23 +94,261 @@
       {
         "id": "frost-titan",
         "name": "Frost Titan",
-        "baseHp": 44,
-        "damage": 2,
+        "baseHp": 85,
+        "damage": 6,
         "elite": false,
         "status": ["chill"],
         "icon": "boss-titan"
       },
       {
+        "id": "ice-wraith",
+        "name": "Ice Wraith",
+        "baseHp": 95,
+        "damage": 6,
+        "elite": false,
+        "status": ["chill", "shield"],
+        "icon": "boss-harbinger"
+      },
+      {
+        "id": "starlit-seer",
+        "name": "Starlit Seer",
+        "baseHp": 115,
+        "damage": 7,
+        "elite": true,
+        "status": ["vision"],
+        "icon": "boss-harbinger"
+      },
+      {
         "id": "aurora-harbinger",
         "name": "Aurora Harbinger",
-        "baseHp": 60,
-        "damage": 3,
+        "baseHp": 155,
+        "damage": 8,
         "elite": true,
         "status": ["chill", "vulnerable"],
         "icon": "boss-harbinger"
       }
     ],
-    "shopTags": ["frost", "vision"],
+    "shopTags": ["vision", "preview", "healing"],
     "events": ["shrine", "mystery", "aurora"]
+  },
+  "swamp": {
+    "name": "Mire of Echoes",
+    "palette": "verdant",
+    "floors": [
+      {
+        "id": "bog-slime",
+        "name": "Bog Slime",
+        "baseHp": 75,
+        "damage": 5,
+        "elite": false,
+        "status": ["ooze"],
+        "icon": "boss-slime"
+      },
+      {
+        "id": "man-eating-flower",
+        "name": "Man-Eating Flower",
+        "baseHp": 92,
+        "damage": 6,
+        "elite": false,
+        "status": ["curse"],
+        "icon": "boss-lich"
+      },
+      {
+        "id": "florida-crocodile",
+        "name": "Florida Crocodile",
+        "baseHp": 118,
+        "damage": 7,
+        "elite": true,
+        "status": ["ooze", "vulnerable"],
+        "icon": "boss-golem"
+      },
+      {
+        "id": "swamp-sovereign",
+        "name": "Swamp Sovereign",
+        "baseHp": 160,
+        "damage": 8,
+        "elite": true,
+        "status": ["curse", "shield"],
+        "icon": "boss-lich"
+      }
+    ],
+    "shopTags": ["healing", "shield", "control"],
+    "events": ["shrine", "mystery", "smuggler"]
+  },
+  "dunes": {
+    "name": "Sunken Dunes",
+    "palette": "ember",
+    "floors": [
+      {
+        "id": "sand-wraith",
+        "name": "Sand Wraith",
+        "baseHp": 82,
+        "damage": 6,
+        "elite": false,
+        "status": ["curse"],
+        "icon": "boss-lich"
+      },
+      {
+        "id": "glass-scorpion",
+        "name": "Glass Scorpion",
+        "baseHp": 100,
+        "damage": 7,
+        "elite": false,
+        "status": ["vulnerable"],
+        "icon": "boss-golem"
+      },
+      {
+        "id": "mirage-giant",
+        "name": "Mirage Giant",
+        "baseHp": 122,
+        "damage": 8,
+        "elite": true,
+        "status": ["shield"],
+        "icon": "boss-titan"
+      },
+      {
+        "id": "dune-pharaoh",
+        "name": "Dune Pharaoh",
+        "baseHp": 165,
+        "damage": 9,
+        "elite": true,
+        "status": ["curse", "burn"],
+        "icon": "boss-harbinger"
+      }
+    ],
+    "shopTags": ["economy", "damage", "luck"],
+    "events": ["smuggler", "mystery", "forge"]
+  },
+  "reef": {
+    "name": "Tidal Reef",
+    "palette": "default",
+    "floors": [
+      {
+        "id": "coral-sentinel",
+        "name": "Coral Sentinel",
+        "baseHp": 80,
+        "damage": 6,
+        "elite": false,
+        "status": ["shield"],
+        "icon": "boss-golem"
+      },
+      {
+        "id": "tidecaller",
+        "name": "Tidecaller",
+        "baseHp": 98,
+        "damage": 6,
+        "elite": false,
+        "status": ["chill"],
+        "icon": "boss-titan"
+      },
+      {
+        "id": "abyssal-siren",
+        "name": "Abyssal Siren",
+        "baseHp": 120,
+        "damage": 7,
+        "elite": true,
+        "status": ["curse", "vision"],
+        "icon": "boss-harbinger"
+      },
+      {
+        "id": "leviathan-heart",
+        "name": "Leviathan Heart",
+        "baseHp": 170,
+        "damage": 8,
+        "elite": true,
+        "status": ["chill", "vulnerable"],
+        "icon": "boss-phoenix"
+      }
+    ],
+    "shopTags": ["vision", "healing", "control"],
+    "events": ["mystery", "fortune-teller", "aurora"]
+  },
+  "sky": {
+    "name": "Tempest Spire",
+    "palette": "default",
+    "floors": [
+      {
+        "id": "storm-gryphon",
+        "name": "Storm Gryphon",
+        "baseHp": 88,
+        "damage": 6,
+        "elite": false,
+        "status": ["burn"],
+        "icon": "boss-phoenix"
+      },
+      {
+        "id": "cloud-giant",
+        "name": "Cloud Giant",
+        "baseHp": 104,
+        "damage": 7,
+        "elite": false,
+        "status": ["shield"],
+        "icon": "boss-titan"
+      },
+      {
+        "id": "lightning-matriarch",
+        "name": "Lightning Matriarch",
+        "baseHp": 128,
+        "damage": 8,
+        "elite": true,
+        "status": ["burn", "vision"],
+        "icon": "boss-golem"
+      },
+      {
+        "id": "zephyr-archon",
+        "name": "Zephyr Archon",
+        "baseHp": 175,
+        "damage": 9,
+        "elite": true,
+        "status": ["burn", "vulnerable"],
+        "icon": "boss-harbinger"
+      }
+    ],
+    "shopTags": ["vision", "damage", "combo"],
+    "events": ["fortune-teller", "shrine", "smuggler"]
+  },
+  "clockwork": {
+    "name": "Clockwork Citadel",
+    "palette": "default",
+    "floors": [
+      {
+        "id": "gear-knight",
+        "name": "Gear Knight",
+        "baseHp": 90,
+        "damage": 6,
+        "elite": false,
+        "status": ["shield"],
+        "icon": "boss-golem"
+      },
+      {
+        "id": "steam-artificer",
+        "name": "Steam Artificer",
+        "baseHp": 108,
+        "damage": 7,
+        "elite": false,
+        "status": ["curse"],
+        "icon": "boss-lich"
+      },
+      {
+        "id": "chrono-sphinx",
+        "name": "Chrono Sphinx",
+        "baseHp": 132,
+        "damage": 8,
+        "elite": true,
+        "status": ["vision", "vulnerable"],
+        "icon": "boss-harbinger"
+      },
+      {
+        "id": "overclocked-core",
+        "name": "Overclocked Core",
+        "baseHp": 180,
+        "damage": 10,
+        "elite": true,
+        "status": ["burn", "shield"],
+        "icon": "boss-phoenix"
+      }
+    ],
+    "shopTags": ["economy", "combo", "damage"],
+    "events": ["forge", "mystery", "shrine"]
   }
 }
