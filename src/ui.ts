@@ -88,9 +88,9 @@ export class UIManager {
     hero.innerHTML = `
       <div class="brand">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="var(--accent)" stroke-width="2"></circle><path d="M7 12h10M12 7v10" stroke="var(--accent)" stroke-width="2"></path></svg>
-        Rogue-Like Bingo
+        WINGO
       </div>
-      <p>Chain bingos to shatter bosses, collect relics, and master each biome.</p>
+      <p>Wield ingenious numbers, gear up, and topple biome bosses in rapid-fire bingo battles.</p>
     `;
     sheet.appendChild(hero);
 
