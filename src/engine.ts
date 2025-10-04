@@ -305,8 +305,21 @@ export class Engine {
   }
 
   private applySettings(): void {
-    document.body.classList.toggle('reduced-motion', this.meta.settings.reducedMotion);
-    document.body.dataset.palette = this.meta.settings.colorPalette;
+    if (typeof document === 'undefined') return;
+
+    const apply = (): void => {
+      const body = document.body;
+      if (!body) return;
+      body.classList.toggle('reduced-motion', this.meta.settings.reducedMotion);
+      body.dataset.palette = this.meta.settings.colorPalette;
+    };
+
+    if (!document.body || document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', apply, { once: true });
+      return;
+    }
+
+    apply();
   }
 
   private emit(): void {
