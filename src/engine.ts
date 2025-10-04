@@ -11,7 +11,8 @@ import type {
   ItemDefinition,
   MetaState,
   RunState,
-  RunSummary
+  RunSummary,
+  DifficultyId
 } from './types';
 
 const META_KEY = 'rogue-bingo-meta';
@@ -73,7 +74,7 @@ const defaultMeta = (): MetaState => ({
   xp: 0,
   unlocks: {
     biomes: ['crypt'],
-    items: ['arcane-dauber', 'lucky-charm', 'healing-brew']
+    items: ['aurora-draft', 'healing-brew', 'free-space-charm', 'lucky-charm', 'arcane-dauber']
   },
   stats: {
     runs: 0,
@@ -135,10 +136,10 @@ export class Engine {
     };
   }
 
-  startNewRun(biomeId: string): void {
+  startNewRun(biomeId: string, difficultyId: DifficultyId): void {
     const seed = Math.floor(Math.random() * 2 ** 32);
     this.rng = new SeededRng(seed);
-    this.run = this.game.createRun(this.meta, this.rng, { seed, biomeId });
+    this.run = this.game.createRun(this.meta, this.rng, { seed, biomeId, difficultyId });
     this.summaryGranted = false;
     this.view = 'game';
     this.saveRun();
@@ -197,6 +198,14 @@ export class Engine {
     this.emit();
   }
 
+  advanceFloor(): void {
+    if (!this.run) return;
+    this.run = this.game.advanceFloor(this.meta, this.run, this.rng);
+    this.checkSummary();
+    this.saveRun();
+    this.emit();
+  }
+
   buyItem(itemId: string): void {
     if (!this.run) return;
     this.run = this.game.buyItem(this.meta, this.run, itemId);
@@ -206,7 +215,8 @@ export class Engine {
 
   useItem(itemId: string): void {
     if (!this.run) return;
-    this.run = this.game.useItem(this.meta, this.run, itemId);
+    this.run = this.game.useItem(this.meta, this.run, itemId, this.rng);
+    this.checkSummary();
     this.saveRun();
     this.emit();
   }
@@ -295,8 +305,21 @@ export class Engine {
   }
 
   private applySettings(): void {
-    document.body.classList.toggle('reduced-motion', this.meta.settings.reducedMotion);
-    document.body.dataset.palette = this.meta.settings.colorPalette;
+    if (typeof document === 'undefined') return;
+
+    const apply = (): void => {
+      const body = document.body;
+      if (!body) return;
+      body.classList.toggle('reduced-motion', this.meta.settings.reducedMotion);
+      body.dataset.palette = this.meta.settings.colorPalette;
+    };
+
+    if (!document.body || document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', apply, { once: true });
+      return;
+    }
+
+    apply();
   }
 
   private emit(): void {
@@ -321,7 +344,15 @@ export class Engine {
     merged.version = META_VERSION;
     merged.unlocks.biomes = Array.from(new Set(merged.unlocks.biomes.concat(['crypt'])));
     merged.unlocks.items = Array.from(
-      new Set(merged.unlocks.items.concat(['arcane-dauber', 'lucky-charm', 'healing-brew']))
+      new Set(
+        merged.unlocks.items.concat([
+          'aurora-draft',
+          'healing-brew',
+          'free-space-charm',
+          'lucky-charm',
+          'arcane-dauber'
+        ])
+      )
     );
     return merged;
   }
@@ -365,11 +396,19 @@ export class Engine {
   }
 
   private applyUnlocks(): void {
-    if (this.meta.xp >= 15 && !this.meta.unlocks.biomes.includes('emberforge')) {
-      this.meta.unlocks.biomes.push('emberforge');
-    }
-    if (this.meta.xp >= 35 && !this.meta.unlocks.biomes.includes('aurora')) {
-      this.meta.unlocks.biomes.push('aurora');
+    const biomeUnlocks: [number, string][] = [
+      [15, 'emberforge'],
+      [35, 'aurora'],
+      [55, 'swamp'],
+      [75, 'dunes'],
+      [95, 'reef'],
+      [120, 'sky'],
+      [150, 'clockwork']
+    ];
+    for (const [threshold, biome] of biomeUnlocks) {
+      if (this.meta.xp >= threshold && !this.meta.unlocks.biomes.includes(biome)) {
+        this.meta.unlocks.biomes.push(biome);
+      }
     }
     const unlockMap: [number, string][] = [
       [8, 'embershard'],

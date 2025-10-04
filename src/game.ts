@@ -16,7 +16,11 @@ import type {
   RunSummary,
   ShopOffer,
   StatusEffectId,
-  StatusEffectState
+  StatusEffectState,
+  DifficultyId,
+  DifficultySettings,
+  EncounterModifierState,
+  Rarity
 } from './types';
 
 export interface RNG {
@@ -26,60 +30,95 @@ export interface RNG {
   shuffle<T>(arr: T[]): T[];
 }
 
-const BOARD_SIZE = 5;
-const ALL_LINES = buildLineIndices();
-
 const clone = <T>(value: T): T =>
   typeof structuredClone === 'function' ? structuredClone(value) : JSON.parse(JSON.stringify(value));
 
-function buildLineIndices(): number[][] {
+const lineCache = new Map<number, number[][]>();
+
+function getLineIndices(size: number): number[][] {
+  if (lineCache.has(size)) return lineCache.get(size)!;
   const lines: number[][] = [];
-  for (let r = 0; r < BOARD_SIZE; r += 1) {
-    lines.push(Array.from({ length: BOARD_SIZE }, (_, c) => r * BOARD_SIZE + c));
+  for (let r = 0; r < size; r += 1) {
+    lines.push(Array.from({ length: size }, (_, c) => r * size + c));
   }
-  for (let c = 0; c < BOARD_SIZE; c += 1) {
-    lines.push(Array.from({ length: BOARD_SIZE }, (_, r) => r * BOARD_SIZE + c));
+  for (let c = 0; c < size; c += 1) {
+    lines.push(Array.from({ length: size }, (_, r) => r * size + c));
   }
-  lines.push(Array.from({ length: BOARD_SIZE }, (_, i) => i * (BOARD_SIZE + 1)));
-  lines.push(Array.from({ length: BOARD_SIZE }, (_, i) => (i + 1) * (BOARD_SIZE - 1)));
+  lines.push(Array.from({ length: size }, (_, i) => i * (size + 1)));
+  lines.push(Array.from({ length: size }, (_, i) => (i + 1) * (size - 1)));
+  lineCache.set(size, lines);
   return lines;
 }
 
-function createBoardNumbers(rng: RNG, balance: BalanceData): number[] {
+function getCenterIndex(size: number): number {
+  return Math.floor((size * size) / 2);
+}
+
+function createBoardNumbers(
+  rng: RNG,
+  balance: BalanceData,
+  boardSize: number,
+  distinct: number,
+  floor: number
+): number[] {
   const perColumn = balance.board.numbersPerColumn;
-  const numbers: number[] = [];
-  for (let c = 0; c < BOARD_SIZE; c += 1) {
+  const allNumbers: number[] = [];
+  for (let c = 0; c < boardSize; c += 1) {
     const start = c * perColumn + 1;
-    const bucket = Array.from({ length: perColumn }, (_, i) => start + i);
-    rng.shuffle(bucket);
-    for (let r = 0; r < BOARD_SIZE; r += 1) {
-      if (c === 2 && r === 2) {
-        numbers.push(0);
-      } else {
-        numbers.push(bucket.pop() ?? start);
-      }
+    for (let i = 0; i < perColumn; i += 1) {
+      allNumbers.push(start + i);
     }
   }
+  rng.shuffle(allNumbers);
+  const maxCells = boardSize * boardSize;
+  const growth = Math.ceil(boardSize / 2) * floor;
+  const uniqueCount = Math.min(maxCells, distinct + growth);
+  const pool = allNumbers.slice(0, Math.max(1, uniqueCount));
+  const numbers: number[] = [];
+  let index = 0;
+  while (numbers.length < maxCells) {
+    numbers.push(pool[index % pool.length]);
+    index += 1;
+  }
+  rng.shuffle(numbers);
   return numbers;
 }
 
-function buildBoard(numbers: number[], balance: BalanceData): BoardCell[] {
-  return numbers.map((value, index) => {
-    const free = index === balance.board.freeIndex;
-    return {
-      id: `cell-${index}`,
-      number: value,
-      marked: free,
-      free,
-      column: balance.board.columns[index % BOARD_SIZE]
-    } satisfies BoardCell;
-  });
+function buildBoard(numbers: number[], balance: BalanceData, boardSize: number): BoardCell[] {
+  const columns = balance.board.columns.slice(0, boardSize);
+  const center = getCenterIndex(boardSize);
+  return numbers.map((value, index) => ({
+    id: `cell-${index}`,
+    number: value,
+    marked: false,
+    free: index === center,
+    column: columns[index % boardSize]
+  }));
 }
 
-function shuffleDeck(rng: RNG, balance: BalanceData): number[] {
-  const count = balance.board.columns.length * balance.board.numbersPerColumn;
-  const deck = Array.from({ length: count }, (_, i) => i + 1);
+function shuffleDeck(rng: RNG, balance: BalanceData, boardSize: number): number[] {
+  const perColumn = balance.board.numbersPerColumn;
+  const deck: number[] = [];
+  for (let c = 0; c < boardSize; c += 1) {
+    const start = c * perColumn + 1;
+    for (let i = 0; i < perColumn; i += 1) {
+      deck.push(start + i);
+    }
+  }
   return rng.shuffle(deck);
+}
+
+function rarityValue(rarity: Rarity): number {
+  switch (rarity) {
+    case 'legendary':
+      return 4;
+    case 'rare':
+      return 3;
+    case 'uncommon':
+      return 2;
+    default:
+      return 1;
+  }
 }
 
 export const EVENT_LIBRARY: Record<string, EventDefinition> = {
@@ -216,6 +255,7 @@ export const EVENT_LIBRARY: Record<string, EventDefinition> = {
 export interface RunCreationOptions {
   seed: number;
   biomeId: string;
+  difficultyId: DifficultyId;
 }
 
 interface SerializedRun {
@@ -231,39 +271,57 @@ export class GameService {
 
   createRun(meta: MetaState, rng: RNG, options: RunCreationOptions): RunState {
     const biome = this.biomes[options.biomeId];
+    const difficulty = this.balance.difficulties[options.difficultyId];
+    if (!biome || !difficulty) {
+      throw new Error('Invalid run configuration');
+    }
+    const boardSize = difficulty.boardSize;
     const boss = this.createBoss(biome.floors[0], 0, this.balance.adaptive.threatStart);
-    const deck = shuffleDeck(rng, this.balance);
-    const board = buildBoard(createBoardNumbers(rng, this.balance), this.balance);
+    const deck = shuffleDeck(rng, this.balance, boardSize);
+    const boardNumbers = createBoardNumbers(rng, this.balance, boardSize, difficulty.distinctNumbers, 0);
+    const board = buildBoard(boardNumbers, this.balance, boardSize);
     const player: PlayerState = {
-      hearts: this.balance.startingHearts + this.getHeartBonus(meta),
-      coins: this.balance.startingCoins,
+      hearts: difficulty.startingHearts + this.getHeartBonus(meta),
+      coins: difficulty.startingCoins,
       combo: 0,
-      freeDaubers: 1,
+      freeDaubers: 0,
       bombReady: true,
       statuses: []
     };
-    const preview = this.computePreview(deck, meta, [], undefined);
     const floorModifier = this.pickModifier(rng, 0);
+    const encounterModifier = this.assignEncounterModifier(rng, difficulty, 0);
+    this.applyEncounterModifierSetup(encounterModifier, player, boss);
+    const callCap = Math.max(
+      1,
+      difficulty.callCapBase + (encounterModifier?.effect.callCapModifier ?? 0)
+    );
+    const preview = this.computePreview(deck, meta, [], floorModifier, encounterModifier);
     const run: RunState = {
       id: `${Date.now()}-${Math.round(rng.next() * 1_000_000)}`,
       seed: options.seed,
       biomeId: options.biomeId,
       biome,
+      difficultyId: difficulty.id,
+      difficulty,
       floorIndex: 0,
-      callCap: this.balance.callCapBase,
+      callCap,
       callsMade: 0,
       deck,
       preview,
       board,
+      boardSize,
       boss,
       player,
       inventory: [],
-      shop: this.generateShop(meta, rng, biome, 0),
+      shop: [],
+      shopAvailable: false,
+      awaitingAdvance: false,
       events: this.generateEvents(biome, rng),
-      log: [`You enter the ${biome.name}.`],
+      log: [`${difficulty.label} run begins in the ${biome.name}.`],
       defeatedBosses: [],
       adaptiveThreat: this.balance.adaptive.threatStart,
       floorModifier,
+      encounterModifier,
       metrics: {
         damageDealt: 0,
         statusesApplied: boss.statuses.length,
@@ -275,22 +333,52 @@ export class GameService {
     return run;
   }
 
-  callNext(meta: MetaState, state: RunState, rng: RNG): { draw: number; damage: number; matched: number; state: RunState } {
-    if (state.summary) return { draw: 0, damage: 0, matched: 0, state };
+  callNext(
+    meta: MetaState,
+    state: RunState,
+    rng: RNG
+  ): { draw: number; damage: number; matched: number; state: RunState } {
+    if (state.summary || state.awaitingAdvance) {
+      return { draw: 0, damage: 0, matched: 0, state };
+    }
     const next = clone(state);
     if (next.deck.length === 0) {
-      next.deck = shuffleDeck(rng, this.balance);
+      next.deck = shuffleDeck(rng, this.balance, next.boardSize);
     }
-    const draw = next.deck.shift() ?? rng.int(75) + 1;
+    let draw = next.deck.shift() ?? rng.int(next.boardSize * this.balance.board.numbersPerColumn) + 1;
+    const encounter = next.encounterModifier;
+    if (encounter?.effect.sequenceOffset) {
+      if (typeof encounter.sequenceAnchor === 'undefined') {
+        encounter.sequenceAnchor = draw;
+        encounter.sequenceRemaining = encounter.effect.sequenceOffset.count;
+      } else if ((encounter.sequenceRemaining ?? 0) > 0) {
+        const source = typeof next.lastCall === 'number' ? next.lastCall : encounter.sequenceAnchor;
+        draw = source + encounter.effect.sequenceOffset.offset;
+        encounter.sequenceRemaining = (encounter.sequenceRemaining ?? 0) - 1;
+      }
+    }
+    next.lastCall = draw;
     next.callsMade += 1;
-    const matched = next.board.filter((cell) => !cell.marked && cell.number === draw);
+    let matched = next.board.filter((cell) => !cell.marked && cell.number === draw);
+    if (encounter?.blockedState && encounter.blockedState.callsLeft > 0) {
+      const blockedColumns = new Set(encounter.blockedState.columns);
+      const before = matched.length;
+      matched = matched.filter((cell) => !blockedColumns.has(cell.column));
+      if (before !== matched.length) {
+        next.log.push(`${encounter.name} blocks ${before - matched.length} match${before - matched.length === 1 ? '' : 'es'}.`);
+      }
+      encounter.blockedState.callsLeft -= 1;
+      if (encounter.blockedState.callsLeft <= 0) {
+        encounter.blockedState = undefined;
+      }
+    }
     let damage = 0;
     if (matched.length > 0) {
       matched.forEach((cell) => {
         cell.marked = true;
         this.handleCellMark(next, cell);
       });
-      const lineCount = this.countLines(next.board);
+      const lineCount = this.countLines(next.board, next.boardSize);
       damage = this.computeDamage(meta, next, matched.length, lineCount);
       next.player.combo = Math.min(this.balance.combo.max, next.player.combo + 1);
       next.boss.hp = Math.max(0, next.boss.hp - damage);
@@ -303,8 +391,14 @@ export class GameService {
     } else {
       this.onWhiff(meta, next, rng);
     }
-    next.preview = this.computePreview(next.deck, meta, next.inventory, next.floorModifier);
-    if (!next.summary && next.callsMade >= next.callCap) {
+    next.preview = this.computePreview(
+      next.deck,
+      meta,
+      next.inventory,
+      next.floorModifier,
+      next.encounterModifier
+    );
+    if (!next.summary && !next.awaitingAdvance && next.callsMade >= next.callCap) {
       this.onCallCap(meta, next);
     }
     return { draw, damage, matched: matched.length, state: next };
@@ -337,6 +431,10 @@ export class GameService {
 
   buyItem(meta: MetaState, state: RunState, itemId: string): RunState {
     const next = clone(state);
+    if (!next.shopAvailable) {
+      next.log.push('The shop is closed. Defeat an enemy to browse goods.');
+      return next;
+    }
     const offer = next.shop.find((o) => o.item.id === itemId);
     if (!offer || offer.sold) return next;
     if (!meta.unlocks.items.includes(itemId)) {
@@ -355,28 +453,70 @@ export class GameService {
     } else {
       next.inventory.push({ def: offer.item, quantity: 1 });
     }
+    if (offer.item.id === 'free-space-charm') {
+      const center = getCenterIndex(next.boardSize);
+      const cell = next.board[center];
+      if (cell && !cell.marked) {
+        cell.marked = true;
+        next.log.push('The central star ignites, granting a permanent mark.');
+      }
+    }
     next.metrics!.itemsCollected += 1;
     this.updateCodex(meta, next, itemId);
     next.log.push(`Purchased ${offer.item.name}.`);
     return next;
   }
 
-  useItem(meta: MetaState, state: RunState, itemId: string): RunState {
+  useItem(meta: MetaState, state: RunState, itemId: string, rng: RNG): RunState {
     const next = clone(state);
     const entry = next.inventory.find((item) => item.def.id === itemId);
     if (!entry || entry.quantity <= 0) return next;
     if (entry.def.type === 'consumable') {
-      if (entry.def.id === 'healing-brew') {
-        const heal = next.biomeId === 'aurora' ? 2 : 1;
+      const power = rarityValue(entry.def.rarity);
+      if (entry.def.tags.includes('healing')) {
+        const heal = 6 * power;
         next.player.hearts += heal;
-        next.log.push(`Healing Brew restores ${heal} heart${heal > 1 ? 's' : ''}.`);
+        next.log.push(`${entry.def.name} restores ${heal} health.`);
+      }
+      if (entry.def.tags.includes('economy')) {
+        const coins = 3 * power;
+        next.player.coins += coins;
+        next.metrics!.coinsEarned += coins;
+        next.log.push(`${entry.def.name} grants ${coins} coins.`);
+      }
+      if (entry.def.tags.includes('damage')) {
+        const burst = 5 * power;
+        next.boss.hp = Math.max(0, next.boss.hp - burst);
+        next.metrics!.damageDealt += burst;
+        next.log.push(`${entry.def.name} blasts the enemy for ${burst} damage.`);
+        if (next.boss.hp === 0) {
+          this.onBossDefeated(meta, next, rng);
+        }
+      }
+      if (entry.def.tags.includes('shield')) {
+        next.player.freeDaubers += power;
+        next.log.push(`${entry.def.name} grants ${power} free dauber${power > 1 ? 's' : ''}.`);
+      }
+      if (entry.def.tags.includes('combo')) {
+        next.player.combo = Math.min(this.balance.combo.max, next.player.combo + power);
+        next.log.push(`${entry.def.name} boosts combo to ${next.player.combo}.`);
+      }
+      if (entry.def.tags.includes('status')) {
+        this.addStatus(next.boss.statuses, {
+          id: 'vulnerable',
+          stacks: 1,
+          duration: power,
+          target: 'boss'
+        });
+        next.metrics!.statusesApplied += 1;
+        next.log.push(`${entry.def.name} exposes the boss for ${power} turn${power > 1 ? 's' : ''}.`);
       }
       entry.quantity -= 1;
       if (entry.quantity === 0) {
         next.inventory = next.inventory.filter((i) => i.quantity > 0);
       }
     } else {
-      next.log.push(`${entry.def.name} is a passive relic and stays equipped.`);
+      next.log.push(`${entry.def.name} is a passive modifier and stays equipped.`);
     }
     this.updateCodex(meta, next);
     return next;
@@ -384,21 +524,27 @@ export class GameService {
 
   rerollShop(meta: MetaState, state: RunState, rng: RNG): RunState {
     const next = clone(state);
+    if (!next.shopAvailable) {
+      next.log.push('The shopkeeper is away.');
+      return next;
+    }
     const cost = this.getRerollCost(next);
     if (next.player.coins < cost) {
       next.log.push('Not enough coins to reroll.');
       return next;
     }
     next.player.coins -= cost;
-    next.shop = this.generateShop(meta, rng, next.biome, next.floorIndex);
+    next.shop = this.generateShop(meta, rng, next.biome, next.floorIndex + 1, next.difficultyId);
     next.log.push('Shop rerolled.');
     return next;
   }
 
   skipShop(state: RunState): RunState {
     const next = clone(state);
+    if (!next.shopAvailable) return next;
     next.shop.forEach((offer) => (offer.locked = true));
     next.log.push('You ignore the shop for now.');
+    next.shopAvailable = false;
     return next;
   }
 
@@ -426,21 +572,30 @@ export class GameService {
 
   advanceFloor(meta: MetaState, state: RunState, rng: RNG): RunState {
     const next = clone(state);
-    next.floorIndex += 1;
-    if (next.floorIndex >= next.biome.floors.length) {
+    if (!next.awaitingAdvance) return next;
+    const upcomingIndex = next.floorIndex + 1;
+    if (upcomingIndex >= next.biome.floors.length) {
       next.summary = this.buildSummary(next, true);
       return next;
     }
-    const bossDef = next.biome.floors[next.floorIndex];
-    next.boss = this.createBoss(bossDef, next.floorIndex, next.adaptiveThreat);
-    next.deck = shuffleDeck(rng, this.balance);
-    next.board = buildBoard(createBoardNumbers(rng, this.balance), this.balance);
-    next.board[this.balance.board.freeIndex].marked = true;
-    next.callCap = this.balance.callCapBase + this.balance.callCapPerFloor * next.floorIndex;
+    next.floorIndex = upcomingIndex;
+    next.awaitingAdvance = false;
+    next.shopAvailable = false;
+    next.shop = [];
     next.callsMade = 0;
     next.player.combo = 0;
     next.player.freeDaubers += 1;
     next.player.bombReady = true;
+    const boardSize = next.difficulty.boardSize;
+    next.boardSize = boardSize;
+    next.deck = shuffleDeck(rng, this.balance, boardSize);
+    next.board = buildBoard(
+      createBoardNumbers(rng, this.balance, boardSize, next.difficulty.distinctNumbers, next.floorIndex),
+      this.balance,
+      boardSize
+    );
+    const bossDef = next.biome.floors[next.floorIndex];
+    next.boss = this.createBoss(bossDef, next.floorIndex, next.adaptiveThreat);
     next.floorModifier = this.pickModifier(rng, next.floorIndex);
     if (next.floorModifier?.effect.heal) {
       next.player.hearts += next.floorModifier.effect.heal;
@@ -448,8 +603,20 @@ export class GameService {
     if (next.floorModifier?.effect.comboStart) {
       next.player.combo = next.floorModifier.effect.comboStart;
     }
-    next.preview = this.computePreview(next.deck, meta, next.inventory, next.floorModifier);
-    next.shop = this.generateShop(meta, rng, next.biome, next.floorIndex);
+    next.encounterModifier = this.assignEncounterModifier(rng, next.difficulty, next.floorIndex);
+    this.applyEncounterModifierSetup(next.encounterModifier, next.player, next.boss);
+    next.callCap = Math.max(
+      1,
+      next.difficulty.callCapBase + next.difficulty.callCapPerFloor * next.floorIndex +
+        (next.encounterModifier?.effect.callCapModifier ?? 0)
+    );
+    next.preview = this.computePreview(
+      next.deck,
+      meta,
+      next.inventory,
+      next.floorModifier,
+      next.encounterModifier
+    );
     next.events = this.generateEvents(next.biome, rng);
     next.log.push(`Floor ${next.floorIndex + 1}: ${bossDef.name} approaches.`);
     this.updateCodex(meta, next);
@@ -463,8 +630,18 @@ export class GameService {
   deserialize(payload: SerializedRun, meta: MetaState): RunState {
     const run = clone(payload.state);
     run.biome = this.biomes[run.biomeId];
+    run.difficulty = this.balance.difficulties[run.difficultyId];
+    run.boardSize = run.boardSize ?? run.difficulty.boardSize;
     run.shop = run.shop.map((offer) => ({ ...offer }));
     run.events = run.events.map((event) => ({ ...event }));
+    run.shopAvailable = Boolean(run.shopAvailable);
+    run.awaitingAdvance = Boolean(run.awaitingAdvance);
+    if (run.encounterModifier?.effect.blockedColumns && !run.encounterModifier.blockedState) {
+      run.encounterModifier.blockedState = {
+        columns: [...run.encounterModifier.effect.blockedColumns.columns],
+        callsLeft: run.encounterModifier.effect.blockedColumns.calls
+      };
+    }
     this.updateCodex(meta, run);
     return run;
   }
@@ -485,17 +662,28 @@ export class GameService {
     };
   }
 
-  private computePreview(deck: number[], meta: MetaState, inventory: InventoryItem[], modifier?: FloorModifierState): number[] {
+  private computePreview(
+    deck: number[],
+    meta: MetaState,
+    inventory: InventoryItem[],
+    modifier?: FloorModifierState,
+    encounter?: EncounterModifierState
+  ): number[] {
     const vision = this.balance.previewBase + this.getVisionBonus(meta, inventory);
     const modifierDelta = modifier?.effect.previewDelta ?? 0;
-    return deck.slice(0, Math.max(0, vision + modifierDelta));
+    const encounterDelta = -(encounter?.effect.previewPenalty ?? 0);
+    return deck.slice(0, Math.max(0, vision + modifierDelta + encounterDelta));
   }
 
   private getVisionBonus(meta: MetaState, inventory: InventoryItem[]): number {
     let bonus = 0;
-    if (inventory.some((item) => item.def.id === 'lucky-charm')) bonus += 1;
-    if (inventory.some((item) => item.def.id === 'seer-lens')) bonus += 2;
-    if (meta.codex.items.includes('seer-lens')) bonus += 0; // lore bonus placeholder
+    inventory.forEach((item) => {
+      if (item.def.type === 'consumable') return;
+      if (item.def.tags.includes('vision') || item.def.tags.includes('preview')) {
+        bonus += rarityValue(item.def.rarity);
+      }
+    });
+    if (meta.codex.items.includes('seer-lens')) bonus += 1;
     return bonus;
   }
 
@@ -505,6 +693,13 @@ export class GameService {
     if (lines >= 2) damage += this.balance.damage.lineDouble;
     if (lines >= 3) damage += this.balance.damage.lineTriple;
     if (lines >= 4) damage += this.balance.damage.bingo;
+    const passiveDamage = state.inventory
+      .filter((item) => item.def.type !== 'consumable' && item.def.tags.includes('damage'))
+      .reduce((total, item) => total + rarityValue(item.def.rarity), 0);
+    damage += passiveDamage;
+    if (state.inventory.some((item) => item.def.type !== 'consumable' && item.def.tags.includes('combo'))) {
+      damage += matched * 2;
+    }
     if (state.inventory.some((item) => item.def.id === 'arcane-dauber')) {
       damage += state.player.combo * 2;
     }
@@ -515,6 +710,10 @@ export class GameService {
     if (state.inventory.some((item) => item.def.id === 'frost-lantern') && lines > 0) {
       this.addStatus(state.boss.statuses, { id: 'chill', stacks: 1, duration: 2, target: 'boss' });
     }
+    if (lines > 0 && state.inventory.some((item) => item.def.type !== 'consumable' && item.def.tags.includes('status'))) {
+      this.addStatus(state.boss.statuses, { id: 'vulnerable', stacks: 1, duration: 2, target: 'boss' });
+      state.metrics!.statusesApplied += 1;
+    }
     if (state.inventory.some((item) => item.def.id === 'cursed-brand')) {
       damage = Math.round(damage * 1.2);
       this.addStatus(state.boss.statuses, { id: 'vulnerable', stacks: 1, duration: 2, target: 'boss' });
@@ -522,9 +721,9 @@ export class GameService {
     return Math.max(0, Math.round(damage));
   }
 
-  private countLines(board: BoardCell[]): number {
+  private countLines(board: BoardCell[], boardSize: number): number {
     let lines = 0;
-    for (const indices of ALL_LINES) {
+    for (const indices of getLineIndices(boardSize)) {
       if (indices.every((idx) => board[idx]?.marked)) lines += 1;
     }
     return lines;
@@ -562,17 +761,40 @@ export class GameService {
   private onBossDefeated(meta: MetaState, state: RunState, rng: RNG): void {
     state.log.push(`${state.boss.def.name} is defeated!`);
     state.defeatedBosses.push(state.boss.def.id);
-    state.player.coins += 6 + state.floorIndex * 2;
-    state.metrics!.coinsEarned += 6 + state.floorIndex * 2;
+    const rewardRange = state.difficulty.rewardCoins;
+    const reward = rng.int(rewardRange.max - rewardRange.min + 1) + rewardRange.min;
+    const economyBonus = state.inventory
+      .filter(
+        (item) =>
+          item.def.type !== 'consumable' &&
+          (item.def.tags.includes('economy') || item.def.tags.includes('luck'))
+      )
+      .reduce((total, item) => total + rarityValue(item.def.rarity), 0);
+    const totalReward = reward + economyBonus;
+    state.player.coins += totalReward;
+    state.metrics!.coinsEarned += totalReward;
     state.adaptiveThreat = this.adjustThreat(state);
-    const progressed = this.advanceFloor(meta, state, rng);
-    Object.assign(state, progressed);
+    state.awaitingAdvance = true;
+    state.shopAvailable = true;
+    state.lastCall = undefined;
+    const nextFloorIndex = state.floorIndex + 1;
+    if (nextFloorIndex >= state.biome.floors.length) {
+      state.log.push(`You cleared the ${state.biome.name}!`);
+      state.summary = this.buildSummary(state, true);
+      state.shopAvailable = false;
+      state.shop = [];
+      return;
+    }
+    state.shop = this.generateShop(meta, rng, state.biome, nextFloorIndex, state.difficultyId);
+    state.events = [];
+    const rewardText = economyBonus > 0 ? `${totalReward} coins (+${economyBonus} bonus).` : `${totalReward} coins.`;
+    state.log.push(`You earn ${rewardText} The shop opens before the next foe.`);
   }
 
   private onWhiff(meta: MetaState, state: RunState, rng: RNG): void {
     state.player.combo = 0;
     if (state.inventory.some((item) => item.def.id === 'cursed-brand')) {
-      state.player.hearts -= 1;
+      state.player.hearts -= 2;
       state.log.push('The curse lashes out for missing a call.');
       if (state.player.hearts <= 0) {
         state.summary = this.buildSummary(state, false);
@@ -585,19 +807,29 @@ export class GameService {
       if ((chilled.duration ?? 0) <= 0) {
         state.boss.statuses = state.boss.statuses.filter((s) => s !== chilled);
       }
-    } else {
-      const damage = state.boss.def.damage + Math.floor(state.adaptiveThreat - 1);
-      state.player.hearts -= damage;
-      state.log.push(`${state.boss.def.name} counters for ${damage} damage.`);
-      if (state.player.hearts <= 0) {
-        state.summary = this.buildSummary(state, false);
-      }
+      return;
+    }
+    const encounter = state.encounterModifier;
+    const bonusDamage = encounter?.effect.bossDamageBonus ?? 0;
+    const shieldValue = state.inventory
+      .filter((item) => item.def.type !== 'consumable' && item.def.tags.includes('shield'))
+      .reduce((total, item) => total + rarityValue(item.def.rarity), 0);
+    const damage = Math.max(1, state.boss.def.damage + bonusDamage - shieldValue);
+    state.player.hearts -= damage;
+    state.log.push(`${state.boss.def.name} counters for ${damage} damage.`);
+    if (state.player.hearts <= 0) {
+      state.summary = this.buildSummary(state, false);
     }
   }
 
   private onCallCap(meta: MetaState, state: RunState): void {
-    state.player.hearts -= state.boss.def.damage;
-    state.log.push(`${state.boss.def.name} enrages as calls run out!`);
+    const bonusDamage = state.encounterModifier?.effect.bossDamageBonus ?? 0;
+    const shieldValue = state.inventory
+      .filter((item) => item.def.type !== 'consumable' && item.def.tags.includes('shield'))
+      .reduce((total, item) => total + rarityValue(item.def.rarity), 0);
+    const damage = Math.max(1, state.boss.def.damage + bonusDamage - shieldValue);
+    state.player.hearts -= damage;
+    state.log.push(`${state.boss.def.name} enrages as calls run out for ${damage} damage!`);
     if (state.player.hearts <= 0) {
       state.summary = this.buildSummary(state, false);
     } else {
@@ -625,7 +857,51 @@ export class GameService {
     return modifier;
   }
 
-  private generateShop(meta: MetaState, rng: RNG, biome: BiomeDefinition, floor: number): ShopOffer[] {
+  private assignEncounterModifier(
+    rng: RNG,
+    difficulty: DifficultySettings,
+    floor: number
+  ): EncounterModifierState | undefined {
+    if (!difficulty.negativeModifierFloors.includes(floor)) return undefined;
+    if (this.balance.encounterModifiers.length === 0) return undefined;
+    const definition = this.balance.encounterModifiers[rng.int(this.balance.encounterModifiers.length)];
+    const modifier: EncounterModifierState = clone({ ...definition });
+    if (modifier.effect.blockedColumns) {
+      modifier.blockedState = {
+        columns: [...modifier.effect.blockedColumns.columns],
+        callsLeft: modifier.effect.blockedColumns.calls
+      };
+    }
+    if (modifier.effect.sequenceOffset) {
+      modifier.sequenceRemaining = modifier.effect.sequenceOffset.count;
+    }
+    return modifier;
+  }
+
+  private applyEncounterModifierSetup(
+    modifier: EncounterModifierState | undefined,
+    player: PlayerState,
+    boss: BossState
+  ): void {
+    if (!modifier) return;
+    const status = modifier.effect.startingStatus;
+    if (!status) return;
+    const targetCollection = status.target === 'player' ? player.statuses : boss.statuses;
+    this.addStatus(targetCollection, {
+      id: status.id,
+      stacks: status.stacks,
+      duration: status.duration,
+      target: status.target
+    });
+  }
+
+  private generateShop(
+    meta: MetaState,
+    rng: RNG,
+    biome: BiomeDefinition,
+    floor: number,
+    difficultyId: DifficultyId
+  ): ShopOffer[] {
     const unlocked = this.items.filter((item) => meta.unlocks.items.includes(item.id));
     const pool = unlocked.filter((item) => {
       if (item.type === 'curse' && floor === 0) return false;
@@ -634,16 +910,19 @@ export class GameService {
     });
     const offers: ShopOffer[] = [];
     rng.shuffle(pool);
-    for (let i = 0; i < Math.min(3, pool.length); i += 1) {
+    const offerCount = floor >= 2 ? 4 : 3;
+    for (let i = 0; i < Math.min(offerCount, pool.length); i += 1) {
       const item = pool[i];
-      offers.push({ item, price: Math.max(1, item.cost - this.getShopDiscount(meta, item)), sold: false });
+      const price = Math.max(1, item.cost - this.getShopDiscount(meta, item, difficultyId));
+      offers.push({ item, price, sold: false });
     }
     return offers;
   }
 
-  private getShopDiscount(meta: MetaState, item: ItemDefinition): number {
+  private getShopDiscount(meta: MetaState, item: ItemDefinition, difficultyId: DifficultyId): number {
     if (item.id === 'seer-lens') return 1;
     if (meta.unlocks.items.includes('seer-lens') && item.tags.includes('vision')) return 1;
+    if (difficultyId === 'hard' && item.rarity === 'common') return 1;
     return 0;
   }
 
@@ -703,7 +982,7 @@ export class GameService {
       meta.unlocks.items.push(effect.unlockItem);
     }
     if (effect.rerollShop) {
-      state.shop = this.generateShop(meta, rng, state.biome, state.floorIndex);
+      state.shop = this.generateShop(meta, rng, state.biome, state.floorIndex + 1, state.difficultyId);
     }
   }
 
